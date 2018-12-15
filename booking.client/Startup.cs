@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using booking.client.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace booking.client
 {
@@ -25,6 +27,9 @@ namespace booking.client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Add-Migration -Name Initial -Project booking.client -StartupProject booking.client
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("Default")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
