@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace booking.order.Repository
 {
-    public class OrderRepository : IRepository<Order>
+    public class OrderRepository : IOrderRepository
     {
         private ApplicationContext context;
 

@@ -3,21 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 
-namespace booking.flight.Controllers
+namespace booking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class BookingController : ControllerBase
     {
+        private readonly IHttpClientFactory clientFactory;
+
+        public BookingController(IHttpClientFactory clientFactory)
+        {
+            this.clientFactory = clientFactory;
+        }
+        
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task< ActionResult<int>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/client");
+
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var count = await response.Content.ReadAsAsync<int>();
+            return count;
         }
 
-        // GET api/values/5
+        // GET api/values/5 
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {

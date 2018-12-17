@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace booking.flight.Repository
 {
-    public class FlightRepository : IRepository<Flight>
+    public class FlightRepository : IFlightRepository
     {
         private ApplicationContext context;
 

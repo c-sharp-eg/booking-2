@@ -27,6 +27,17 @@ namespace booking.client.Controllers
             return Ok(client);
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<int>> Get()
+        {
+            var client = clientRepository.GetAll();
+            if (client == null)
+            {
+                return BadRequest();
+            }
+            return Ok(client.Count());
+        }
+
         public ClientController(IClientRepository clientRepository)
         {
             this.clientRepository = clientRepository;
@@ -35,7 +46,7 @@ namespace booking.client.Controllers
 
         // добавление клиента
         [HttpPost]
-        public ActionResult Post([FromBody]CreateClient model)
+        public ActionResult Post([FromBody]ClientModel model)
         {
             var client = new Client
             {
@@ -51,7 +62,7 @@ namespace booking.client.Controllers
 
         // обновление клиента
         [HttpPut("{id}")]
-        public ActionResult Put(String id, [FromBody]CreateClient model)
+        public ActionResult Put(String id, [FromBody]ClientModel model)
         {
             var client = clientRepository.Get(id);
             if (client == null)
