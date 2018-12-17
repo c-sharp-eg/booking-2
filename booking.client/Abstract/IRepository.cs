@@ -8,7 +8,7 @@ namespace booking.client.Abstract
     public interface IRepository <T>
     {
         void Add(T item);
-        void Delete(T item);
+        void Delete(String id);
         T Update(T item);
         T Get(String id);
         IEnumerable<T> GetAll();

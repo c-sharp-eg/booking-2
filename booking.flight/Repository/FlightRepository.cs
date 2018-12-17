@@ -1,4 +1,5 @@
 ﻿using booking.flight.Abstract;
+using booking.flight.DAL;
 using booking.flight.Model;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,52 @@ namespace booking.flight.Repository
 {
     public class FlightRepository : IRepository<Flight>
     {
-        public void Add(Flight item)
+        private ApplicationContext context;
+
+        public FlightRepository(ApplicationContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
         }
 
-        public void Delete(Flight item)
+        public void Add(Flight item)
         {
-            throw new NotImplementedException();
+            context.Flights.Add(item);
+            context.SaveChanges();
+        }
+
+        public void Delete(String id)
+        {
+            var flight = context.Flights.FirstOrDefault(x => x.Id == id);
+            if (flight != null)
+            {
+                context.Flights.Remove(flight);
+                context.SaveChanges();
+            }
         }
 
         public Flight Get(string id)
         {
-            throw new NotImplementedException();
+            return context.Flights.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Flight> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Flights.ToList();
         }
 
         public Flight Update(Flight item)
         {
-            throw new NotImplementedException();
+            var flight = context.Flights.FirstOrDefault(x => x.Id == item.Id);
+            if (flight != null)
+            {
+                flight.AircraftId = item.AircraftId;
+                flight.Date = item.Date;
+                flight.Number = item.Number;
+                flight.Time = item.Time;
+                context.Flights.Update(flight);
+                context.SaveChanges();
+            }
+            return flight;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using booking.order.Abstract;
+using booking.order.DAL;
 using booking.order.Model;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,52 @@ namespace booking.order.Repository
 {
     public class OrderRepository : IRepository<Order>
     {
+        private ApplicationContext context;
+
+        public OrderRepository(ApplicationContext context)
+        {
+            this.context = context;
+        }
+
         public void Add(Order item)
         {
-            throw new NotImplementedException();
+            context.Orders.Add(item);
+            context.SaveChanges();
         }
 
-        public void Delete(Order item)
+        public void Delete(String id)
         {
-            throw new NotImplementedException();
+            var order = context.Orders.FirstOrDefault(x => x.Id == id);
+            if (order != null)
+            {
+                context.Orders.Remove(order);
+                context.SaveChanges();
+            }
         }
 
-        public Order Get(string id)
+            public Order Get(string id)
         {
-            throw new NotImplementedException();
+            return context.Orders.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Order> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Orders.ToList();
         }
 
         public Order Update(Order item)
         {
-            throw new NotImplementedException();
+            var order = context.Orders.FirstOrDefault(x => x.Id == item.Id);
+            if (order != null)
+            {
+                order.ClientId = item.ClientId;
+                order.FlightId = item.FlightId;
+                order.Status = item.Status;
+                order.Summ = item.Summ;
+                context.Orders.Update(order);
+                context.SaveChanges();
+            }
+            return order;
         }
     }
 }

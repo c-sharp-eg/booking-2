@@ -10,9 +10,9 @@ namespace booking.order.Model
     {
         [Key]
         public string Id { get; set; }
-        private string FlightId { get; set; }
-        private string ClientId { get; set; }
-        private decimal Summ { get; set; }
-        private OrderStatus Status { get; set; }
+        public string FlightId { get; set; }
+        public string ClientId { get; set; }
+        public decimal Summ { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

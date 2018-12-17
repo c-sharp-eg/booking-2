@@ -1,4 +1,5 @@
 ﻿using booking.client.Abstract;
+using booking.client.DAL;
 using booking.client.Model;
 using System;
 using System.Collections.Generic;
@@ -7,31 +8,56 @@ using System.Threading.Tasks;
 
 namespace booking.client.Repository
 {
-    public class ClientRepository : IRepository<Client>
+    public class ClientRepository : IClientRepository
     {
-        public void Add(Client item)
+        private readonly ApplicationContext context;
+
+        public ClientRepository (ApplicationContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
         }
 
-        public void Delete(Client item)
+        public void Add(Client item)
         {
-            throw new NotImplementedException();
+            item.Id = Guid.NewGuid().ToString();
+            context.Clients.Add(item);
+            context.SaveChanges();
+        }
+
+        public void Delete(String id)
+        {
+            var client = context.Clients.FirstOrDefault(x => x.Id == id);
+            if (client != null)
+            {
+                context.Clients.Remove(client);
+                context.SaveChanges();
+            }
+            
         }
 
         public Client Get(string id)
         {
-            throw new NotImplementedException();
+            return context.Clients.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Client> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Clients.ToList();
         }
 
         public Client Update(Client item)
         {
-            throw new NotImplementedException();
+            var client = context.Clients.FirstOrDefault(x => x.Id == item.Id);
+            if (client != null)
+            {
+                client.Firstname = item.Firstname;
+                client.Middlename = item.Middlename;
+                client.Lastname = item.Lastname;
+                client.Age = item.Age;
+                context.Clients.Update(client);
+                context.SaveChanges();
+            }
+            return client;
         }
     }
 }

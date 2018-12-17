@@ -10,10 +10,8 @@ namespace booking.flight.Model
     {
         [Key]
         public string Id { get; set; }
-        private string Number { get; set; }
+        public string Number { get; set; }
         public string AircraftId { get; set; }
-        private string Date { get; set; }
-        private string Time { get; set; }
-
+        public DateTime Date { get; set; }
     }
 }

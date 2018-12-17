@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using booking.client.DAL;
 using Microsoft.EntityFrameworkCore;
+using booking.client.Repository;
+using booking.client.Abstract;
 
 namespace booking.client
 {
@@ -31,6 +33,7 @@ namespace booking.client
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("Default")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<IClientRepository, ClientRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
