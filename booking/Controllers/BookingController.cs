@@ -24,7 +24,7 @@ namespace booking.Controllers
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/client/count");
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5005/api/client/count");
 
                 var client = clientFactory.CreateClient();
                 var response = await client.SendAsync(request);
