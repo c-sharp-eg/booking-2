@@ -27,8 +27,8 @@ namespace booking.client.Controllers
             return Ok(client);
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<int>> Get()
+        [HttpGet("[action]")]
+        public ActionResult<int> Count()
         {
             var client = clientRepository.GetAll();
             if (client == null)
