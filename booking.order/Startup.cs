@@ -39,12 +39,7 @@ namespace booking.order
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
+           
             app.UseMvc();
         }
     }
