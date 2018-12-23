@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\booking.client\booking.client.csproj" />
     <ProjectReference Include="..\booking.common\booking.common.csproj" />
+    <ProjectReference Include="..\booking.flight\booking.flight.csproj" />
   </ItemGroup>
 
 </Project>

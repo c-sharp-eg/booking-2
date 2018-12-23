@@ -8,6 +8,6 @@ namespace booking.common.ViewModel
     public class AircraftModel
     {
         public string Name { get; set; }
-        public string NumberOfSeats { get; set; }
+        public int NumberOfSeats { get; set; }
     }
 }

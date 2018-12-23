@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using booking.common.ViewModel;
+using System.Collections;
 
 namespace booking.Controllers
 {
@@ -24,12 +25,13 @@ namespace booking.Controllers
         }
 
         // GET api/values
+
         [HttpPost("[action]")]
         public async Task<ActionResult> Create([FromBody]ClientModel model)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5005/api/client")
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5010/api/client")
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
                 };
@@ -44,11 +46,38 @@ namespace booking.Controllers
             }
         }
 
-        // GET api/values/5 
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet]
+        public async Task<ActionResult<int>> Get()
         {
-            return "value";
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/client/count");
+
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var count = await response.Content.ReadAsAsync<int>();
+                return Ok(count);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetAll()
+        {
+            try
+            {
+                var client = clientFactory.CreateClient();
+                var response = await client.GetStringAsync("http://localhost:5010/api/client/getall");
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Client>>(response);
+                return Ok(tt);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         // POST api/values

@@ -28,6 +28,21 @@ namespace booking.client.Controllers
         }
 
         [HttpGet("[action]")]
+        public ActionResult<IEnumerable<Client>> GetAll([FromQuery]int page, [FromQuery]int amount)
+        {
+            var clients = clientRepository.GetAll();
+            if (page != 0 && amount != 0)
+            {
+                clients = clients.Skip(page * (amount - 1)).Take(amount);
+            }
+            if (clients == null)
+            {
+                return BadRequest();
+            }
+            return Ok(clients);
+        }
+
+        [HttpGet("[action]")]
         public ActionResult<int> Count()
         {
             var client = clientRepository.GetAll();

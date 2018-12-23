@@ -51,7 +51,7 @@ namespace booking.order.Repository
                 order.ClientId = item.ClientId;
                 order.FlightId = item.FlightId;
                 order.Status = item.Status;
-                order.Summ = item.Summ;
+                order.Sum = item.Sum;
                 context.Orders.Update(order);
                 context.SaveChanges();
             }

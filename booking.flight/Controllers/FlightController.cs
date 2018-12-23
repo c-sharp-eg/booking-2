@@ -15,9 +15,42 @@ namespace booking.flight.Controllers
     {
         private IFlightRepository flightRepository;
 
-        public FlightController(IFlightRepository flightRepository)
+        public IAircraftRepository aircraftRepository { get; }
+
+        public FlightController(IFlightRepository flightRepository, IAircraftRepository aircraftRepository)
         {
             this.flightRepository = flightRepository;
+            aircraftRepository = aircraftRepository;
+        }
+
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<Flight>> GetAllFlights([FromQuery]int page, [FromQuery]int amount)
+        {
+            var flights = flightRepository.GetAll();
+            if (page != 0 && amount != 0)
+            {
+                flights = flights.Skip(page * (amount - 1)).Take(amount);
+            }
+            if (flights == null)
+            {
+                return BadRequest();
+            }
+            return Ok(flights);
+        }
+
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<Flight>> GetAllAircrafts([FromQuery]int page, [FromQuery]int amount)
+        {
+            var aircrafts = aircraftRepository.GetAll();
+            if (page != 0 && amount != 0)
+            {
+                aircrafts = aircrafts.Skip(page * (amount - 1)).Take(amount);
+            }
+            if (aircrafts == null)
+            {
+                return BadRequest();
+            }
+            return Ok(aircrafts);
         }
 
         // GET
@@ -40,6 +73,8 @@ namespace booking.flight.Controllers
             {
                 AircraftId = model.AircraftId,
                 Date = model.Date,
+                FreeSeats = model.FreeSeats,
+                Sum = model.Sum,
                 Number = model.Number            
             };
 
@@ -59,6 +94,8 @@ namespace booking.flight.Controllers
 
             flight.AircraftId = model.AircraftId;
             flight.Date = model.Date;
+            flight.FreeSeats = model.FreeSeats;
+            flight.Sum = model.Sum;
             flight.Number = model.Number;
 
             flightRepository.Update(flight);

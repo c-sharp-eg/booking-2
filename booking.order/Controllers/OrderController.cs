@@ -42,7 +42,7 @@ namespace booking.order.Controllers
                 ClientId = model.ClientId,
                 FlightId = model.FlightId,
                 Status = model.Status,
-                Summ = model.Summ
+                Sum = model.Sum
             };
 
             orderRepository.Add(order);
@@ -61,7 +61,7 @@ namespace booking.order.Controllers
             order.ClientId = model.ClientId;
             order.FlightId = model.FlightId;
             order.Status = model.Status;
-            order.Summ = model.Summ;
+            order.Sum = model.Sum;
 
             orderRepository.Update(order);
             

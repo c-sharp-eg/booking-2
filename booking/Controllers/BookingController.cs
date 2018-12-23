@@ -19,23 +19,7 @@ namespace booking.Controllers
         }
         
         // GET api/values
-        [HttpGet]
-        public async Task< ActionResult<int>> Get()
-        {
-            try
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5005/api/client/count");
-
-                var client = clientFactory.CreateClient();
-                var response = await client.SendAsync(request);
-                var count = await response.Content.ReadAsAsync<int>();
-                return Ok(count);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
+        
 
         // GET api/values/5 
         [HttpGet("{id}")]

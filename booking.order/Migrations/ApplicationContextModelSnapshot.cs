@@ -20,6 +20,14 @@ namespace booking.order.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("FlightId");
+
+                    b.Property<int>("Status");
+
+                    b.Property<decimal>("Summ");
+
                     b.HasKey("Id");
 
                     b.ToTable("Orders");

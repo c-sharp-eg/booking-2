@@ -8,7 +8,7 @@ using booking.order.DAL;
 namespace booking.order.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20181217184834_initial")]
+    [Migration("20181223172300_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,14 @@ namespace booking.order.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("FlightId");
+
+                    b.Property<int>("Status");
+
+                    b.Property<decimal>("Summ");
 
                     b.HasKey("Id");
 

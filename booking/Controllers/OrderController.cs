@@ -29,7 +29,7 @@ namespace booking.Controllers
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5005/api/client")
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5030/api/order")
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
                 };

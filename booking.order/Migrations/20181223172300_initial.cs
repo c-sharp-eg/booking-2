@@ -10,7 +10,11 @@ namespace booking.order.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    FlightId = table.Column<string>(nullable: true),
+                    ClientId = table.Column<string>(nullable: true),
+                    Summ = table.Column<decimal>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

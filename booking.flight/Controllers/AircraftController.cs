@@ -20,6 +20,21 @@ namespace booking.flight.Controllers
             this.aircraftRepository = aircraftRepository;
         }
 
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<Aircraft>> GetAll([FromQuery]int page, [FromQuery]int amount)
+        {
+            var clients = aircraftRepository.GetAll();
+            if (page != 0 && amount != 0)
+            {
+                clients = clients.Skip(page * (amount - 1)).Take(amount);
+            }
+            if (clients == null)
+            {
+                return BadRequest();
+            }
+            return Ok(clients);
+        }
+
         // GET
         [HttpGet]
         public ActionResult<Aircraft> Get([FromQuery]String id)

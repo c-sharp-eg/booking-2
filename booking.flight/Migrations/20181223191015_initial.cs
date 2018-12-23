@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace booking.flight.Migrations
 {
@@ -10,7 +11,9 @@ namespace booking.flight.Migrations
                 name: "Aircrafts",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    NumberOfSeats = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -22,7 +25,11 @@ namespace booking.flight.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    AircraftId = table.Column<string>(nullable: true)
+                    Number = table.Column<string>(nullable: true),
+                    AircraftId = table.Column<string>(nullable: true),
+                    FreeSeats = table.Column<int>(nullable: false),
+                    Sum = table.Column<decimal>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
