@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using booking.flight.Abstract;
 using booking.flight.Model;
-using booking.client.ViewModel;
-using booking.flight.ViewModel;
+using booking.common.ViewModel;
 
 namespace booking.flight.Controllers
 {

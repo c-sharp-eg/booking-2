@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace booking.order.Model
+namespace booking.common.Model
 {
     
     public enum OrderStatus

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using booking.client.Abstract;
 using booking.client.Model;
-using booking.client.ViewModel;
+using booking.common.ViewModel;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,6 +37,7 @@ namespace booking.client.Controllers
             }
             return Ok(client.Count());
         }
+
 
         public ClientController(IClientRepository clientRepository)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace booking.client.ViewModel
+namespace booking.common.ViewModel
 {
     public class ClientModel
     {

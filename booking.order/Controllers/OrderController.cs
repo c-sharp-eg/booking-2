@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using booking.order.Abstract;
 using booking.order.Model;
-using booking.client.ViewModel;
+using booking.common.ViewModel;
 
 namespace booking.order.Controllers
 {

@@ -51,7 +51,6 @@ namespace booking.flight.Repository
                 flight.AircraftId = item.AircraftId;
                 flight.Date = item.Date;
                 flight.Number = item.Number;
-                flight.Time = item.Time;
                 context.Flights.Update(flight);
                 context.SaveChanges();
             }
