@@ -20,7 +20,7 @@ namespace booking.flight.Controllers
         public FlightController(IFlightRepository flightRepository, IAircraftRepository aircraftRepository)
         {
             this.flightRepository = flightRepository;
-            aircraftRepository = aircraftRepository;
+            this.aircraftRepository = aircraftRepository;
         }
 
         [HttpGet("[action]")]

@@ -66,12 +66,28 @@ namespace booking.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<int>> GetAll()
+        public async Task<ActionResult<int>> GetAllFlights()
         {
             try
             {
                 var client = clientFactory.CreateClient();
-                var response = await client.GetStringAsync("http://localhost:5010/api/client/getall");
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/getall");
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Flight>>(response);
+                return Ok(tt);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetAllAircrafts()
+        {
+            try
+            {
+                var client = clientFactory.CreateClient();
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/getallaircrafts");
                 var tt = JsonConvert.DeserializeObject<IEnumerable<Flight>>(response);
                 return Ok(tt);
             }
