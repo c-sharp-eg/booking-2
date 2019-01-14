@@ -75,7 +75,7 @@ namespace booking.flight.Controllers
                 Date = model.Date,
                 FreeSeats = model.FreeSeats,
                 Sum = model.Sum,
-                Number = model.Number            
+                Number = model.Number
             };
 
             flightRepository.Add(flight);

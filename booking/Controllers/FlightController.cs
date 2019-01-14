@@ -71,7 +71,7 @@ namespace booking.Controllers
             try
             {
                 var client = clientFactory.CreateClient();
-                var response = await client.GetStringAsync("http://localhost:5020/api/flight/getall");
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/GetAllFlights");
                 var tt = JsonConvert.DeserializeObject<IEnumerable<Flight>>(response);
                 return Ok(tt);
             }
