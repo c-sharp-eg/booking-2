@@ -7,6 +7,7 @@ using System.Net.Http;
 using booking.common.ViewModel;
 using Newtonsoft.Json;
 using System.Text;
+using booking.order.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,6 +38,40 @@ namespace booking.Controllers
                 var response = await client.SendAsync(request);
                 var create = await response.Content.ReadAsAsync<int>();
                 return Ok(create);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetAllOrders()
+        {
+            try
+            {
+                var client = clientFactory.CreateClient();
+                var response = await client.GetStringAsync("http://localhost:5030/api/order/GetAllOrders");
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Order>>(response);
+                return Ok(tt);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<int>> Get()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order");
+
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var result = await response.Content.ReadAsAsync<int>();
+                return Ok(result);
             }
             catch
             {

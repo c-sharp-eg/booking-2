@@ -20,6 +20,22 @@ namespace booking.order.Controllers
             this.orderRepository = orderRepository;
         }
 
+
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<Order>> GetAllOrders([FromQuery]int page, [FromQuery]int amount)
+        {
+            var orders = orderRepository.GetAll();
+            if (page != 0 && amount != 0)
+            {
+                orders = orders.Skip(page * (amount - 1)).Take(amount);
+            }
+            if (orders == null)
+            {
+                return BadRequest();
+            }
+            return Ok(orders);
+        }
+
         // GET 
         [HttpGet]
         public ActionResult<Order> Get([FromQuery]String id)

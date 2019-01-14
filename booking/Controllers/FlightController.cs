@@ -65,6 +65,42 @@ namespace booking.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult<int>> GetFlight()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5020/api/flight");
+
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var result = await response.Content.ReadAsAsync<int>();
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<int>> GetAircraft()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5020/api/aircraft");
+
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var result = await response.Content.ReadAsAsync<int>();
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("[action]")]
         public async Task<ActionResult<int>> GetAllFlights()
         {

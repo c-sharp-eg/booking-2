@@ -36,8 +36,6 @@ namespace booking
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-
            
             app.UseMvc();
         }

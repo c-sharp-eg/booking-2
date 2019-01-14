@@ -21,6 +21,7 @@
     <ProjectReference Include="..\booking.client\booking.client.csproj" />
     <ProjectReference Include="..\booking.common\booking.common.csproj" />
     <ProjectReference Include="..\booking.flight\booking.flight.csproj" />
+    <ProjectReference Include="..\booking.order\booking.order.csproj" />
   </ItemGroup>
 
 </Project>

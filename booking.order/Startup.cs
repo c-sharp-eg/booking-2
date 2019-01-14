@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using booking.order.DAL;
 using Microsoft.EntityFrameworkCore;
+using booking.order.Abstract;
+using booking.order.Repository;
 
 namespace booking.order
 {
@@ -30,6 +32,7 @@ namespace booking.order
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("Default")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
