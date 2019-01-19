@@ -13,7 +13,7 @@ namespace booking.order.Model
         public string Id { get; set; }
         public string FlightId { get; set; }
         public string ClientId { get; set; }
-        public decimal Sum { get; set; }
+        public decimal Summ { get; set; }
         public OrderStatus Status { get; set; }
     }
 }

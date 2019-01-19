@@ -40,7 +40,11 @@ namespace booking.order.Repository
 
         public IEnumerable<Order> GetAll()
         {
-            return context.Orders.ToList();
+            try
+            {
+                return context.Orders.ToList();
+            }
+            catch (Exception ex) { return null; }
         }
 
         public Order Update(Order item)
@@ -51,7 +55,7 @@ namespace booking.order.Repository
                 order.ClientId = item.ClientId;
                 order.FlightId = item.FlightId;
                 order.Status = item.Status;
-                order.Sum = item.Sum;
+                order.Summ = item.Summ;
                 context.Orders.Update(order);
                 context.SaveChanges();
             }
