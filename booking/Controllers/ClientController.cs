@@ -24,6 +24,10 @@ namespace booking.Controllers
             this.clientFactory = clientFactory;
         }
 
+        public ClientController()
+        {
+        }
+
         // GET api/values
 
         [HttpPost("[action]")]

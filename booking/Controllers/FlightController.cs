@@ -23,6 +23,10 @@ namespace booking.Controllers
             this.clientFactory = clientFactory;
         }
 
+        public FlightController()
+        {
+        }
+
 
         // GET api/values
         [HttpPost("[action]")]
