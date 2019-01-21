@@ -50,12 +50,12 @@ namespace booking.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult<int>> Get()
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetbyId([FromQuery]String id)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/client");
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/client/getbyid"+"?id="+id);
 
                 var client = clientFactory.CreateClient();
                 var response = await client.SendAsync(request);
@@ -116,8 +116,13 @@ namespace booking.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(string id)
         {
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5010/api/client");
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var create = await response.Content.ReadAsAsync<int>();
+            return;
         }
     }
 }

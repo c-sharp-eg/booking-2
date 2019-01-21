@@ -48,7 +48,18 @@ namespace booking.order.Controllers
             return Ok(order);
         }
 
-        
+        [HttpGet]
+        public ActionResult<Order> GetbyFlightId([FromQuery]String flightId)
+        {
+            var order = orderRepository.GetbyFlightId(flightId);
+            if (order == null)
+            {
+                return BadRequest();
+            }
+            return Ok(order);
+        }
+
+
         // POST api/values
         [HttpPost]
         public ActionResult Post([FromBody] OrderModel model)

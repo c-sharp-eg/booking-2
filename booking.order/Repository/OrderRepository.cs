@@ -38,6 +38,11 @@ namespace booking.order.Repository
             return context.Orders.FirstOrDefault(x => x.Id == id);
         }
 
+        public Order GetbyFlightId(string flightId)
+        {
+            return context.Orders.FirstOrDefault(x => x.FlightId == flightId);
+        }
+
         public IEnumerable<Order> GetAll()
         {
             try

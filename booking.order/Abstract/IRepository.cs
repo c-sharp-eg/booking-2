@@ -11,6 +11,7 @@ namespace booking.order.Abstract
         void Delete(String Id);
         T Update(T item);
         T Get(String id);
+        T GetbyFlightId(String flightId);
         IEnumerable<T> GetAll();
     }
 }

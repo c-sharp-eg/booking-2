@@ -55,26 +55,35 @@ namespace booking.Controllers
                 return BadRequest();
             }
 
-           
+
 
         }
-
+        /*1. Get заказов по полю id рейса.
+        2.Если не ноль, то запоминаем id заказа. (как тут? десериализовать строку и взять поле?) не совсем понятны действия
+        3.Удаляем заказ
+        4.Поиск заказа наверное надо зациклить, пока не 0
+        5. Get рейса по id, если не 0, то update статус для жтого id
+*/
         public async Task<ActionResult<int>> DeleteFlight([FromBody]String id)
         {
 
             try
             {
                 var client = clientFactory.CreateClient();
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/getflight");
-
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
-                var res = await client.SendAsync(request);
-                return Ok(res);
+                //1. Get заказов по полю id рейса.
+                var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid");
+                
+                var request1 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/getflight");
+                var res1 = await client.SendAsync(request1);
+                var request2 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
+                var res2 = await client.SendAsync(request2);
+                return Ok(res1);
             }
             catch
             {
                 return BadRequest();
-    }
+            }
+        }
 
     // GET api/values/5 
     [HttpGet("{id}")]

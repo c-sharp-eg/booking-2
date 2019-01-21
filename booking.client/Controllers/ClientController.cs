@@ -16,8 +16,8 @@ namespace booking.client.Controllers
     {
         private readonly IClientRepository clientRepository;
 
-        [HttpGet]
-        public ActionResult<Client> Get([FromQuery]String id)
+        [HttpGet("[action]")]
+        public ActionResult<Client> GetbyId([FromQuery]String id)
         {
             var client = clientRepository.Get(id);
             if (client == null)

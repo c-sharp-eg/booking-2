@@ -83,12 +83,31 @@ namespace booking.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult<int>> GetbyFlightId()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order/GetbyFlightId");
+
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var result = await response.Content.ReadAsAsync<int>();
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         // GET api/values/5 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
             return "value";
         }
+        */
 
         // POST api/values
         [HttpPost]
