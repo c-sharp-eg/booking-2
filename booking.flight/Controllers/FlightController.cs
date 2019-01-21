@@ -65,6 +65,17 @@ namespace booking.flight.Controllers
             return Ok(flight);
         }
 
+        [HttpGet]
+        public ActionResult<Flight> GetAircraft([FromQuery]String id)
+        {
+            var aircraft = aircraftRepository.Get(id);
+            if (aircraft == null)
+            {
+                return BadRequest();
+            }
+            return Ok(aircraft);
+        }
+
         // добавить рейс
         [HttpPost]
         public ActionResult Post([FromBody] FlightModel model)

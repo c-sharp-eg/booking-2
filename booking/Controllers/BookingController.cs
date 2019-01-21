@@ -59,8 +59,25 @@ namespace booking.Controllers
 
         }
 
-        // GET api/values/5 
-        [HttpGet("{id}")]
+        public async Task<ActionResult<int>> DeleteFlight([FromBody]String id)
+        {
+
+            try
+            {
+                var client = clientFactory.CreateClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/getflight");
+
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
+                var res = await client.SendAsync(request);
+                return Ok(res);
+            }
+            catch
+            {
+                return BadRequest();
+    }
+
+    // GET api/values/5 
+    [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
             return "value";

@@ -139,9 +139,25 @@ namespace booking.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<int>> GetFlight(int id)
         {
-            return "value";
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/getflight");
+
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var result = await response.Content.ReadAsAsync<int>();
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<int>> GetAircraft(int id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/getaircraft");
+
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var result = await response.Content.ReadAsAsync<int>();
+            return Ok(result);
         }
 
         // POST api/values
