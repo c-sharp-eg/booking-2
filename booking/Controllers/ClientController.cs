@@ -55,15 +55,6 @@ namespace booking.Controllers
         {
             try
             {
-                /*var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/client/getbyid"+"?id="+id);
-                request.Headers.Add("id", id);
-                request.
-
-                var client = clientFactory.CreateClient();
-                var response = await client.SendAsync(request);
-                var result =  response.Content.ReadAsAsync<int>();
-                */
-
                 var client = clientFactory.CreateClient();
                 var response = await client.GetStringAsync("http://localhost:5010/api/client/getbyid" + "?id=" + id);
                 var result = JsonConvert.DeserializeObject<Client>(response);
