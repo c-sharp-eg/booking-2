@@ -125,11 +125,22 @@ namespace booking.Controllers
         [HttpDelete("{id}")]
         public async void Delete(string id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5010/api/client");
+
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5010/api/client" + "/" + id)
+            {
+                //Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json"),
+                Content = new StringContent(id, Encoding.UTF8, "application/json")
+            };
             var client = clientFactory.CreateClient();
             var response = await client.SendAsync(request);
             var create = await response.Content.ReadAsAsync<int>();
             return;
+
+            //var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5010/api/client");
+            //var client = clientFactory.CreateClient();
+            //var response = await client.SendAsync(request);
+            //var create = await response.Content.ReadAsAsync<int>();
+            //return;
         }
     }
 }
