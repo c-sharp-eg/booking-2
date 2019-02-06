@@ -101,13 +101,7 @@ namespace booking.Controllers
             }
         }
 
-        // GET api/values/5 
-        /*[HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-        */
+        
 
         // POST api/values
         [HttpPost]
@@ -117,14 +111,37 @@ namespace booking.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Update(string id, [FromBody]ClientModel model)
         {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, "http://localhost:5030/api/order" + "/" + id)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+                };
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var update = await response.Content.ReadAsAsync<int>();
+                return Ok(update);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
-        // DELETE api/values/5
+        // DELETE http://localhost:5000/api/order/<id>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(string  id)
         {
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5030/api/order" + "/" + id)
+            {
+                Content = new StringContent(id, Encoding.UTF8, "application/json")
+            };
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var create = await response.Content.ReadAsAsync<int>();
+            return;
         }
     }
 }

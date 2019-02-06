@@ -68,7 +68,8 @@ namespace booking.Controllers
                 return BadRequest();
             }
         }
-
+        
+        /*
         [HttpGet]
         public async Task<ActionResult<int>> GetFlight()
         {
@@ -86,6 +87,7 @@ namespace booking.Controllers
                 return BadRequest();
             }
         }
+        */
 
         [HttpGet]
         public async Task<ActionResult<int>> GetAircraft()
@@ -141,7 +143,7 @@ namespace booking.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<int>> GetFlight(int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5010/api/getflight");
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5020/api/getflight");
 
             var client = clientFactory.CreateClient();
             var response = await client.SendAsync(request);
@@ -168,14 +170,72 @@ namespace booking.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<ActionResult> UpdateFlight(string id, [FromBody]FlightModel model)
         {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, "http://localhost:5020/api/flight" + "/" + id)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+                };
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var update = await response.Content.ReadAsAsync<int>();
+                return Ok(update);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAircraft(string id, [FromBody]AircraftModel model)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, "http://localhost:5020/api/aircraft" + "/" + id)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+                };
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var update = await response.Content.ReadAsAsync<int>();
+                return Ok(update);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void DeleteFlight(string id)
         {
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5020/api/flight" + "/" + id)
+            {
+                Content = new StringContent(id, Encoding.UTF8, "application/json")
+            };
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var create = await response.Content.ReadAsAsync<int>();
+            return;
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public async void DeleteAircraft(string id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5020/api/aircraft" + "/" + id)
+            {
+                Content = new StringContent(id, Encoding.UTF8, "application/json")
+            };
+            var client = clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            var create = await response.Content.ReadAsAsync<int>();
+            return;
         }
     }
 }

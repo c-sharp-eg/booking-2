@@ -48,6 +48,7 @@ namespace booking.order.Controllers
             return Ok(order);
         }
 
+        //это работает?
         [HttpGet]
         public ActionResult<Order> GetbyFlightId([FromQuery]String flightId)
         {

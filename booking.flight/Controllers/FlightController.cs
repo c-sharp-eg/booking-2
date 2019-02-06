@@ -114,6 +114,7 @@ namespace booking.flight.Controllers
             return Ok();
 
         }
+        
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
@@ -122,5 +123,7 @@ namespace booking.flight.Controllers
             flightRepository.Delete(id);
             return Ok();
         }
+
+        
     }
 }

@@ -106,10 +106,26 @@ namespace booking.Controllers
         {
         }
 
-        // PUT api/values/5
+        // PUT http://localhost:5000/api/client/<id>
+        // body: {"Firstname":"<>", "Middlename":"<>","Lastname":"<>", "Age":<>}
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Update(string id, [FromBody]ClientModel model)
         {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, "http://localhost:5010/api/client" + "/" + id)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+                };
+                var client = clientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var update = await response.Content.ReadAsAsync<int>();
+                return Ok(update);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE api/values/5
