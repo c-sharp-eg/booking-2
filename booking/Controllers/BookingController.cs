@@ -64,20 +64,28 @@ namespace booking.Controllers
         4.Поиск заказа наверное надо зациклить, пока не 0
         5. Get рейса по id, если не 0, то update статус для жтого id
 */
-        public async Task<ActionResult<int>> DeleteFlight([FromBody]String id)
+
+        //http://localhost:5000/api/booking/<id>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<int>> DeleteFlight(String id)
         {
 
             try
             {
                 var client = clientFactory.CreateClient();
                 //1. Get заказов по полю id рейса.
-                var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid");
-                
-                var request1 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/getflight");
-                var res1 = await client.SendAsync(request1);
-                var request2 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
-                var res2 = await client.SendAsync(request2);
-                return Ok(res1);
+                //это работает 
+                var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid?id=" + id);
+                //
+                //var response2 = new HttpRequestMessage(HttpMethod.Get,"http://localhost:5000/api/order/getbyflightid?id=" + id);
+                //var res2 = await client.SendAsync(response2);
+
+
+                //var request1 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/getflight");
+                //var res1 = await client.SendAsync(request1);
+                //var request2 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
+                //var res2 = await client.SendAsync(request2);
+                return Ok(response1);
             }
             catch
             {
@@ -105,9 +113,9 @@ namespace booking.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+      //  [HttpDelete("{id}")]
+      //  public void Delete(int id)
+      //  {
+      //  }
     }
 }

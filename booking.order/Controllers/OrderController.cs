@@ -49,7 +49,7 @@ namespace booking.order.Controllers
         }
 
         //это работает?
-        [HttpGet]
+        [HttpGet("[action]")]
         public ActionResult<Order> GetbyFlightId([FromQuery]String flightId)
         {
             var order = orderRepository.GetbyFlightId(flightId);
