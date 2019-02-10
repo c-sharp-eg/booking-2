@@ -87,10 +87,12 @@ namespace booking.Controllers
                 //var res2 = await client.SendAsync(request2);
                 return Ok(response1);
             }
-            catch
+
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
+           
         }
 
     // GET api/values/5 
