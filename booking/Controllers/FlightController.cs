@@ -110,6 +110,48 @@ namespace booking.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<int>> GetAllFlights()
         {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetAllFlights(client);
+            return Ok(x);
+
+        }
+
+        public async Task<IEnumerable<Flight>> f_GetAllFlights(HttpClient client)
+        {
+            try
+            {
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/GetAllFlights");
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Flight>>(response);
+                return tt;
+            }
+            catch { return null; }
+
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetAllAircrafts()
+        {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetAllAircrafts(client);
+            return Ok(x);
+
+        }
+
+        public async Task<IEnumerable<Aircraft>> f_GetAllAircrafts(HttpClient client)
+        {
+            try
+            {
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/getallaircrafts");
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Aircraft>>(response);
+                return tt;
+            }
+            catch { return null; }
+
+        }
+        /*
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetAllFlights()
+        {
             try
             {
                 var client = clientFactory.CreateClient();
@@ -122,7 +164,7 @@ namespace booking.Controllers
                 return BadRequest();
             }
         }
-
+        
         [HttpGet("[action]")]
         public async Task<ActionResult<int>> GetAllAircrafts()
         {
@@ -138,6 +180,7 @@ namespace booking.Controllers
                 return BadRequest();
             }
         }
+        */
 
         // GET api/values/5
         [HttpGet("{id}")]

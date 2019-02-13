@@ -55,6 +55,7 @@ namespace booking.Controllers
         {
             try
             {
+                var clientController = new ClientController();
                 var client = clientFactory.CreateClient();
                 var response = await client.GetStringAsync("http://localhost:5010/api/client/getbyid" + "?id=" + id);
                 var result = JsonConvert.DeserializeObject<Client>(response);
@@ -85,19 +86,29 @@ namespace booking.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<int>> GetAll()
+        public async Task<ActionResult<int>> GetAllClients()
+        {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetAllClients(client);
+            return Ok(x);
+            
+        }
+
+        public async Task<IEnumerable<Client>> f_GetAllClients(HttpClient client)
         {
             try
             {
-                var client = clientFactory.CreateClient();
+                //var client = clientFactory.CreateClient();
                 var response = await client.GetStringAsync("http://localhost:5010/api/client/getall");
                 var tt = JsonConvert.DeserializeObject<IEnumerable<Client>>(response);
-                return Ok(tt);
+                return tt;
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                var x = BadRequest(ex.Message);
+                return null;
             }
+            
         }
 
         // POST api/values

@@ -36,18 +36,20 @@ namespace booking.Controllers
             try
             {
                 var client = clientFactory.CreateClient();
-                var response1 = await client.GetStringAsync("http://localhost:5010/api/client/getall");
-                var response2 = await client.GetStringAsync("http://localhost:5020/api/flight/GetAllFlights");
-                //var response3 = Redirect("/api/flight/getallaircrafts");
-                //var response4 = Redirect("/api / order / GetAllOrders");
-                var response3 = await client.GetStringAsync("http://localhost:5000/api/flight/getallaircrafts");
-                var response4 = await client.GetStringAsync("http://localhost:5000/api/order/GetAllOrders");
+                var clientController = new ClientController();
+                var flightController = new FlightController();
+                var orderController = new OrderController();
+                
+                var response1 = await clientController.f_GetAllClients(client);
+                var response2 = await flightController.f_GetAllFlights(client);
+                var response3 = await flightController.f_GetAllAircrafts(client);
+                var response4 = await orderController.f_GetAllOrders(client);
 
                 var res = new Res();
-                res.res1 = response1;
-                res.res2 = response2;
-                res.res3 = response3;
-                res.res4 = response4;
+                res.res1 = response1.ToString();
+                res.res2 = response2.ToString();
+                res.res3 = response3.ToString();
+                res.res4 = response4.ToString();
                 return Ok(res);
             }
             catch
@@ -73,9 +75,17 @@ namespace booking.Controllers
             try
             {
                 var client = clientFactory.CreateClient();
+
+                
+                var clientController = new ClientController();
+                var flightController = new FlightController();
+                var orderController = new OrderController();
+
+
                 //1. Get заказов по полю id рейса.
+                var response11 = await orderController.f_GetbyFlightId(client, id);
                 //это работает 
-                var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid?id=" + id);
+                //var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid?id=" + id);
                 //
                 //var response2 = new HttpRequestMessage(HttpMethod.Get,"http://localhost:5000/api/order/getbyflightid?id=" + id);
                 //var res2 = await client.SendAsync(response2);
@@ -85,7 +95,7 @@ namespace booking.Controllers
                 //var res1 = await client.SendAsync(request1);
                 //var request2 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
                 //var res2 = await client.SendAsync(request2);
-                return Ok(response1);
+                return Ok(response11);
             }
 
             catch (Exception ex)

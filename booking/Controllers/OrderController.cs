@@ -52,18 +52,29 @@ namespace booking.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<int>> GetAllOrders()
         {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetAllOrders(client);
+            return Ok(x);
+
+        }
+
+        public async Task<IEnumerable<Order>> f_GetAllOrders(HttpClient client)
+        {
             try
             {
-                var client = clientFactory.CreateClient();
+                
                 var response = await client.GetStringAsync("http://localhost:5030/api/order/GetAllOrders");
                 var tt = JsonConvert.DeserializeObject<IEnumerable<Order>>(response);
-                return Ok(tt);
+                return tt;
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                var x = BadRequest(ex.Message);
+                return null;
             }
+
         }
+        
 
         [HttpGet]
         public async Task<ActionResult<int>> Get()
@@ -82,23 +93,36 @@ namespace booking.Controllers
                 return BadRequest();
             }
         }
-        
+
         //http://localhost:5000/api/order/getbyflightid?id=<id>
         [HttpGet("[action]")]
         public async Task<ActionResult<int>> GetbyFlightId([FromQuery]String id)
         {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetbyFlightId(client, id);
+            return Ok(x);
+
+        }
+
+        
+        public async Task<IEnumerable<Order>> f_GetbyFlightId(HttpClient client, string id)
+        {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
+                //var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
 
-                var client = clientFactory.CreateClient();
-                var response = await client.SendAsync(request);
-                var result = response.Content.ReadAsAsync<int>();
-                return Ok(result); 
+                var response = await client.GetStringAsync("http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Order>>(response);
+                return tt;
+
+                //var response = await client.SendAsync(request);
+                //var result = response.Content.ReadAsAsync<int>();
+                //return Ok(result); 
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                var x = BadRequest(ex.Message);
+                return null;
             }
         }
 
