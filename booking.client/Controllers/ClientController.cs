@@ -16,19 +16,30 @@ namespace booking.client.Controllers
     {
         private readonly IClientRepository clientRepository;
 
-        [HttpGet("[action]")]
-        public ActionResult<Client> GetbyId([FromQuery]String id)
+        public ClientController(IClientRepository clientRepository)
+        {
+            this.clientRepository = clientRepository;
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<ClientModel> GetbyId(string id)
         {
             var client = clientRepository.Get(id);
             if (client == null)
-            {
                 return BadRequest();
-            }
-            return Ok(client);
+
+            return Ok(new ClientModel()
+            {
+                Id = client.Id,
+                Age = client.Age,
+                Firstname = client.Firstname,
+                Lastname = client.Lastname,
+                Middlename = client.Middlename
+            });
         }
 
-        [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Client>> GetAll([FromQuery]int page, [FromQuery]int amount)
+        [HttpGet]
+        public ActionResult<IEnumerable<ClientModel>> GetAll([FromQuery]int page, [FromQuery]int amount)
         {
             var clients = clientRepository.GetAll();
             if (page != 0 && amount != 0)
@@ -36,10 +47,16 @@ namespace booking.client.Controllers
                 clients = clients.Skip(page * (amount - 1)).Take(amount);
             }
             if (clients == null)
-            {
                 return BadRequest();
-            }
-            return Ok(clients);
+
+            return Ok(clients.Select(x => new ClientModel()
+            {
+                Id = x.Id,
+                Age = x.Age,
+                Firstname = x.Firstname,
+                Lastname = x.Lastname,
+                Middlename = x.Middlename
+            }).ToList());
         }
 
         [HttpGet("[action]")]
@@ -52,13 +69,6 @@ namespace booking.client.Controllers
             }
             return Ok(client.Count());
         }
-
-
-        public ClientController(IClientRepository clientRepository)
-        {
-            this.clientRepository = clientRepository;
-        }
-
 
         // добавление клиента
         [HttpPost]
@@ -78,7 +88,7 @@ namespace booking.client.Controllers
 
         // обновление клиента
         [HttpPut("{id}")]
-        public ActionResult Put(String id, [FromBody]ClientModel model)
+        public ActionResult Put(string id, [FromBody]ClientModel model)
         {
             var client = clientRepository.Get(id);
             if (client == null)
@@ -97,7 +107,7 @@ namespace booking.client.Controllers
 
         // DELETE
         [HttpDelete("{id}")]
-        public ActionResult Delete(String id)
+        public ActionResult Delete(string id)
         {
             clientRepository.Delete(id);
             return Ok();

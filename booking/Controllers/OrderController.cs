@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
-using booking.common.ViewModel;
 using Newtonsoft.Json;
+using booking.common.ViewModel;
 using System.Text;
-using booking.order.Model;
+using booking.flight.Model;
+using booking.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,157 +17,46 @@ namespace booking.Controllers
     [Route("api/[controller]")]
     public class OrderController : Controller
     {
-        private IHttpClientFactory clientFactory;
+        private readonly IOrderService _orderService;
 
-        public OrderController(IHttpClientFactory clientFactory)
+        public OrderController(IOrderService orderService)
         {
-            this.clientFactory = clientFactory;
+            _orderService = orderService;
         }
 
-        public OrderController()
+        [HttpPost]
+        public async Task<ActionResult> CreateFlight([FromBody]OrderModel model)
         {
+            await _orderService.Create(model);
+            return Ok();
         }
-
-
-        // GET api/values
-        [HttpPost("[action]")]
-        public async Task<ActionResult> Create([FromBody]OrderModel model)
-        {
-            try
-            {
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5030/api/order")
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
-                };
-                var client = clientFactory.CreateClient();
-                var response = await client.SendAsync(request);
-                var create = await response.Content.ReadAsAsync<int>();
-                return Ok(create);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("[action]")]
-        public async Task<ActionResult<int>> GetAllOrders()
-        {
-            var client = clientFactory.CreateClient();
-            var x = await f_GetAllOrders(client);
-            return Ok(x);
-
-        }
-
-        public async Task<IEnumerable<Order>> f_GetAllOrders(HttpClient client)
-        {
-            try
-            {
-                
-                var response = await client.GetStringAsync("http://localhost:5030/api/order/GetAllOrders");
-                var tt = JsonConvert.DeserializeObject<IEnumerable<Order>>(response);
-                return tt;
-            }
-            catch (Exception ex)
-            {
-                var x = BadRequest(ex.Message);
-                return null;
-            }
-
-        }
-        
 
         [HttpGet]
-        public async Task<ActionResult<int>> Get()
+        public async Task<ActionResult> GetAllFlights()
         {
-            try
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order");
-
-                var client = clientFactory.CreateClient();
-                var response = await client.SendAsync(request);
-                var result = await response.Content.ReadAsAsync<int>();
-                return Ok(result);
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            var orders = await _orderService.GetAll(0, 0);
+            return Ok(orders);
         }
 
-        //http://localhost:5000/api/order/getbyflightid?id=<id>
-        [HttpGet("[action]")]
-        public async Task<ActionResult<int>> GetbyFlightId([FromQuery]String id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetFlight(string id)
         {
-            var client = clientFactory.CreateClient();
-            var x = await f_GetbyFlightId(client, id);
-            return Ok(x);
-
+            var order = await _orderService.GetById(id);
+            return Ok(order);
         }
 
-        
-        public async Task<IEnumerable<Order>> f_GetbyFlightId(HttpClient client, string id)
-        {
-            try
-            {
-                //var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
-
-                var response = await client.GetStringAsync("http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
-                var tt = JsonConvert.DeserializeObject<IEnumerable<Order>>(response);
-                return tt;
-
-                //var response = await client.SendAsync(request);
-                //var result = response.Content.ReadAsAsync<int>();
-                //return Ok(result); 
-            }
-            catch (Exception ex)
-            {
-                var x = BadRequest(ex.Message);
-                return null;
-            }
-        }
-
-        
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(string id, [FromBody]ClientModel model)
+        public async Task<ActionResult> UpdateFlight(string id, [FromBody]OrderModel model)
         {
-            try
-            {
-                var request = new HttpRequestMessage(HttpMethod.Put, "http://localhost:5030/api/order" + "/" + id)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
-                };
-                var client = clientFactory.CreateClient();
-                var response = await client.SendAsync(request);
-                var update = await response.Content.ReadAsAsync<int>();
-                return Ok(update);
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await _orderService.Update(id, model);
+            return Ok();
         }
 
-        // DELETE http://localhost:5000/api/order/<id>
         [HttpDelete("{id}")]
-        public async void Delete(string  id)
+        public async Task<ActionResult> DeleteFlight(string id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5030/api/order" + "/" + id)
-            {
-                Content = new StringContent(id, Encoding.UTF8, "application/json")
-            };
-            var client = clientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-            var create = await response.Content.ReadAsAsync<int>();
-            return;
+            await _orderService.Remove(id);
+            return Ok();
         }
     }
 }

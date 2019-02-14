@@ -23,57 +23,46 @@ namespace booking.flight.Controllers
             this.aircraftRepository = aircraftRepository;
         }
 
-        [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Flight>> GetAllFlights([FromQuery]int page, [FromQuery]int amount)
+        [HttpGet]
+        public ActionResult<IEnumerable<FlightModel>> GetAllFlights([FromQuery]int page, [FromQuery]int amount)
         {
             var flights = flightRepository.GetAll();
             if (page != 0 && amount != 0)
             {
                 flights = flights.Skip(page * (amount - 1)).Take(amount);
             }
-            if (flights == null)
-            {
-                return BadRequest();
-            }
-            return Ok(flights);
-        }
 
-        [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Flight>> GetAllAircrafts([FromQuery]int page, [FromQuery]int amount)
-        {
-            var aircrafts = aircraftRepository.GetAll();
-            if (page != 0 && amount != 0)
-            {
-                aircrafts = aircrafts.Skip(page * (amount - 1)).Take(amount);
-            }
-            if (aircrafts == null)
-            {
+            if (flights == null)
                 return BadRequest();
-            }
-            return Ok(aircrafts);
+
+
+            return Ok(flights.Select( x=> new FlightModel()
+            {
+                AircraftId = x.AircraftId,
+                Date = x.Date,
+                FreeSeats = x.FreeSeats,
+                Number = x.Number,
+                Sum = x.Sum
+            }).ToList());
         }
 
         // GET
-        [HttpGet]
-        public ActionResult<Flight> Get([FromQuery]String id)
+        [HttpGet("{id}")]
+        public ActionResult<FlightModel> Get(string id)
         {
             var flight = flightRepository.Get(id);
             if (flight == null)
-            {
                 return BadRequest();
-            }
-            return Ok(flight);
-        }
 
-        [HttpGet]
-        public ActionResult<Flight> GetAircraft([FromQuery]String id)
-        {
-            var aircraft = aircraftRepository.Get(id);
-            if (aircraft == null)
+
+            return Ok(new FlightModel()
             {
-                return BadRequest();
-            }
-            return Ok(aircraft);
+                AircraftId = flight.AircraftId,
+                Date = flight.Date,
+                FreeSeats = flight.FreeSeats,
+                Number = flight.Number,
+                Sum = flight.Sum
+            });
         }
 
         // добавить рейс
@@ -95,7 +84,7 @@ namespace booking.flight.Controllers
 
         // обновить рейс
         [HttpPut("{id}")]
-        public ActionResult Put(String id, [FromBody] FlightModel model)
+        public ActionResult Put(string id, [FromBody] FlightModel model)
         {
             var flight = flightRepository.Get(id);
             if (flight == null)
@@ -114,7 +103,6 @@ namespace booking.flight.Controllers
             return Ok();
 
         }
-        
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
@@ -123,7 +111,5 @@ namespace booking.flight.Controllers
             flightRepository.Delete(id);
             return Ok();
         }
-
-        
     }
 }

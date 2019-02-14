@@ -15,47 +15,47 @@ using booking.Services;
 namespace booking.Controllers
 {
     [Route("api/[controller]")]
-    public class FlightController : Controller
+    public class AircraftController : Controller
     {
-        private readonly IFlightService _flightService;
+        private readonly IAircraftService _aircraftService;
 
-        public FlightController(IFlightService flightService)
+        public AircraftController(IAircraftService aircraftService)
         {
-            _flightService = flightService;
+            _aircraftService = aircraftService;
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateFlight([FromBody]FlightModel model)
+        public async Task<ActionResult> Create([FromBody]AircraftModel model)
         {
-            await _flightService.Create(model);
+            await _aircraftService.Create(model);
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllFlights()
+        public async Task<ActionResult> GetAll()
         {
-            var flights = await _flightService.GetAll(0, 0);
-            return Ok(flights);
+            var aircrafts = await _aircraftService.GetAll(0, 0);
+            return Ok(aircrafts);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetFlight(string id)
+        public async Task<ActionResult> Get(string id)
         {
-            var flight = await _flightService.GetById(id);
-            return Ok(flight);
+            var aircraft = await _aircraftService.GetById(id);
+            return Ok(aircraft);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateFlight(string id, [FromBody]FlightModel model)
+        public async Task<ActionResult> UpdateFlight(string id, [FromBody]AircraftModel model)
         {
-            await _flightService.Update(id, model);
+            await _aircraftService.Update(id, model);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteFlight(string id)
         {
-            await _flightService.Remove(id);
+            await _aircraftService.Remove(id);
             return Ok();
         }
     }
