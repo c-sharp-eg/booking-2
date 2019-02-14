@@ -83,7 +83,20 @@ namespace booking.Controllers
 
 
                 //1. Get заказов по полю id рейса.
-                var response11 = await orderController.f_GetbyFlightId(client, id);
+                var orders = await orderController.f_GetbyFlightId(client, id);
+                //все из списочка удаляем
+                for (int i = 0; i<orders.Count(); ++i)
+                {
+                    var orderid = orders.ElementAt(i).Id;
+                    var x = orderController.DeleteFlight(orderid);
+                }
+
+                var flights = await flightController.f_GetFlight(client, id);
+                for (int i = 0; i < flights.Count(); ++i)
+                {
+                    var flightid = orders.ElementAt(i).Id;
+                    var x = orderController.DeleteFlight(flightid);
+                }
                 //это работает 
                 //var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid?id=" + id);
                 //
@@ -95,7 +108,7 @@ namespace booking.Controllers
                 //var res1 = await client.SendAsync(request1);
                 //var request2 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
                 //var res2 = await client.SendAsync(request2);
-                return Ok(response11);
+                return Ok(flights);
             }
 
             catch (Exception ex)

@@ -182,6 +182,49 @@ namespace booking.Controllers
         }
         */
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetFlight(string id)
+        {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetFlight(client, id);
+            return Ok(x);
+
+        }
+
+        public async Task<IEnumerable<Flight>> f_GetFlight(HttpClient client, string id)
+        {
+            try
+            {
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/getflight"+ "?Id=" + id);
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Flight>>(response);
+                return tt;
+            }
+            catch { return null; }
+
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<int>> GetAircraft(string id)
+        {
+            var client = clientFactory.CreateClient();
+            var x = await f_GetAircraft(client, id);
+            return Ok(x);
+
+        }
+
+        public async Task<IEnumerable<Aircraft>> f_GetAircraft(HttpClient client, string id)
+        {
+            try
+            {
+                var response = await client.GetStringAsync("http://localhost:5020/api/flight/getaircraft"+"?Id=" + id);
+                var tt = JsonConvert.DeserializeObject<IEnumerable<Aircraft>>(response);
+                return tt;
+            }
+            catch { return null; }
+
+        }
+
+        /*
         // GET api/values/5
         [HttpGet("{id}")]
         public async Task<ActionResult<int>> GetFlight(int id)
@@ -204,6 +247,7 @@ namespace booking.Controllers
             var result = await response.Content.ReadAsAsync<int>();
             return Ok(result);
         }
+        */
 
         // POST api/values
         [HttpPost]

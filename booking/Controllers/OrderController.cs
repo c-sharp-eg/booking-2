@@ -109,15 +109,9 @@ namespace booking.Controllers
         {
             try
             {
-                //var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
-
                 var response = await client.GetStringAsync("http://localhost:5030/api/order/GetbyFlightId" +"?flightId=" + id);
                 var tt = JsonConvert.DeserializeObject<IEnumerable<Order>>(response);
                 return tt;
-
-                //var response = await client.SendAsync(request);
-                //var result = response.Content.ReadAsAsync<int>();
-                //return Ok(result); 
             }
             catch (Exception ex)
             {
@@ -155,7 +149,37 @@ namespace booking.Controllers
             }
         }
 
-        // DELETE http://localhost:5000/api/order/<id>
+
+        // DELETE http://localhost:5000/api/order?id=<id>
+        [HttpGet("[action]")]
+        public ActionResult DeleteFlight([FromQuery]String id)
+        {
+            var client = clientFactory.CreateClient();
+            f_DeleteFlight(client, id);
+            return Ok();
+
+        }
+
+
+        public async void f_DeleteFlight(HttpClient client, string id)
+        {
+            try
+            {
+                //var response = await client.GetStringAsync("http://localhost:5030/api/order" + "/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost:5030/api/order" + "/" + id);
+
+                var response = await client.SendAsync(request);
+                var create = await response.Content.ReadAsAsync<int>();
+                return;
+            }
+            catch (Exception ex)
+            {
+                var x = BadRequest(ex.Message);
+                return;
+            }
+        }
+
+       /*
         [HttpDelete("{id}")]
         public async void Delete(string  id)
         {
@@ -168,5 +192,6 @@ namespace booking.Controllers
             var create = await response.Content.ReadAsAsync<int>();
             return;
         }
+        */
     }
 }
