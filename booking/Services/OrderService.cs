@@ -27,12 +27,12 @@ namespace booking.Services
 
         public async Task Create(OrderModel model)
         {
-            await _httpClient.PostAsJsonAsync(_urls.Flight + "/api/order", model);
+            await _httpClient.PostAsJsonAsync(_urls.Order + "/api/order", model);
         }
 
         public async Task<IEnumerable<OrderModel>> GetAll(int page, int size)
         {
-            var data = await _httpClient.GetStringAsync(_urls.Flight + $"/api/order?page={page}&size={size}");
+            var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order?page={page}&size={size}");
             var aircrafts = !string.IsNullOrEmpty(data)
                 ? JsonConvert.DeserializeObject<IEnumerable<OrderModel>>(data)
                 : null;
@@ -41,26 +41,26 @@ namespace booking.Services
 
         public async Task<OrderModel> GetByFlightId(string id)
         {
-            var data = await _httpClient.GetStringAsync(_urls.Flight + $"/api/getbyflightid/{id}");
+            var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order/getbyflightid?flightid={id}");
             var aircraft = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
             return aircraft;
         }
 
         public async Task<OrderModel> GetById(string id)
         {
-            var data = await _httpClient.GetStringAsync(_urls.Flight + $"/api/order/{id}");
+            var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order/{id}");
             var aircraft = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
             return aircraft;
         }
 
         public async Task Remove(string id)
         {
-            await _httpClient.DeleteAsync(_urls.Flight + $"/api/order/{id}");
+            await _httpClient.DeleteAsync(_urls.Order + $"/api/order/{id}");
         }
 
         public async Task Update(string id, OrderModel model)
         {
-            await _httpClient.PutAsJsonAsync(_urls.Flight + $"/api/order/{id}", model);
+            await _httpClient.PutAsJsonAsync(_urls.Order + $"/api/order/{id}", model);
         }
     }
 }

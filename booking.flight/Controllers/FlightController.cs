@@ -57,6 +57,7 @@ namespace booking.flight.Controllers
 
             return Ok(new FlightModel()
             {
+                Id = flight.Id,
                 AircraftId = flight.AircraftId,
                 Date = flight.Date,
                 FreeSeats = flight.FreeSeats,

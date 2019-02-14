@@ -69,28 +69,40 @@ namespace booking.Controllers
         public async Task<ActionResult<int>> DeleteFlight(String id)
         {
 
-            try
+            OrderModel order;
+            FlightModel flight;
+            //1. Get заказов по полю id рейса.
+            while ((order = await _orderService.GetByFlightId(id)) !=null)
             {
-                var client = clientFactory.CreateClient();
-                //1. Get заказов по полю id рейса.
-                //это работает 
-                var response1 = await client.GetStringAsync("http://localhost:5000/api/order/getbyflightid?id=" + id);
-                //
-                //var response2 = new HttpRequestMessage(HttpMethod.Get,"http://localhost:5000/api/order/getbyflightid?id=" + id);
-                //var res2 = await client.SendAsync(response2);
+                var x = _orderService.Remove(order.Id);
+            }
+            
+            while ((flight = await _flightService.GetById(id)) !=null)
+            { 
+               var x = _flightService.Remove(id);
+            }
+            return Ok(flight);
+        
+         }
 
+        //
+        [HttpPost("{id}")]
+        public async Task<ActionResult<int>> AddOrder(String id)
+        {
 
-                //var request1 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/getflight");
-                //var res1 = await client.SendAsync(request1);
-                //var request2 = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5020/api/flight/delete");
-                //var res2 = await client.SendAsync(request2);
-                return Ok(response1);
+            OrderModel order;
+            FlightModel flight;
+            //1. Get заказов по полю id рейса.
+            while ((order = await _orderService.GetByFlightId(id)) != null)
+            {
+                var x = _orderService.Remove(order.Id);
             }
 
-            catch (Exception ex)
+            while ((flight = await _flightService.GetById(id)) != null)
             {
-                return BadRequest(ex.Message);
+                var x = _flightService.Remove(id);
             }
+            return Ok(flight);
 
         }
 

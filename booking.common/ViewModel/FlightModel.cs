@@ -7,6 +7,7 @@ namespace booking.common.ViewModel
 {
     public class FlightModel
     {
+        public string Id;
         public string Number { get; set; }
         public string AircraftId { get; set; }
         public int FreeSeats { get; set; }

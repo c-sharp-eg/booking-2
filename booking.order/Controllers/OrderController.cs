@@ -60,8 +60,8 @@ namespace booking.order.Controllers
         }
 
         //это работает?
-        [HttpGet("[action]/{id}")]
-        public ActionResult<OrderModel> GetByFlightId(string flightId)
+        [HttpGet("[action]")]
+        public ActionResult<OrderModel> GetByFlightId([FromQuery]string flightId)
         {
             var order = orderRepository.GetbyFlightId(flightId);
             if (order == null)
@@ -69,6 +69,7 @@ namespace booking.order.Controllers
 
             return Ok(new OrderModel()
             {
+                Id=order.Id,
                 ClientId = order.ClientId,
                 FlightId = order.FlightId,
                 Status = order.Status,
