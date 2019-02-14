@@ -20,31 +20,42 @@ namespace booking.flight.Controllers
             this.aircraftRepository = aircraftRepository;
         }
 
-        [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Aircraft>> GetAll([FromQuery]int page, [FromQuery]int amount)
+        [HttpGet]
+        public ActionResult<IEnumerable<AircraftModel>> GetAll([FromQuery]int page, [FromQuery]int amount)
         {
-            var clients = aircraftRepository.GetAll();
+            var aircrafts = aircraftRepository.GetAll();
             if (page != 0 && amount != 0)
             {
-                clients = clients.Skip(page * (amount - 1)).Take(amount);
+                aircrafts = aircrafts.Skip(page * (amount - 1)).Take(amount);
             }
-            if (clients == null)
-            {
+
+            if (aircrafts == null)
                 return BadRequest();
-            }
-            return Ok(clients);
+
+
+            return Ok(aircrafts.Select(x => new AircraftModel()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                NumberOfSeats = x.NumberOfSeats
+            }).ToList());
         }
 
         // GET
-        [HttpGet]
-        public ActionResult<Aircraft> Get([FromQuery]String id)
+        [HttpGet("{id}")]
+        public ActionResult<AircraftModel> Get(string id)
         {
             var aircraft = aircraftRepository.Get(id);
             if (aircraft == null)
-            {
                 return BadRequest();
-            }
-            return Ok(aircraft);
+
+
+            return Ok(new AircraftModel()
+            {
+                Id = aircraft.Id,
+                Name = aircraft.Name,
+                NumberOfSeats = aircraft.NumberOfSeats
+            });
         }
 
         // добавить рейс
@@ -63,7 +74,7 @@ namespace booking.flight.Controllers
 
         // обновить рейс
         [HttpPut("{id}")]
-        public ActionResult Put(String id, [FromBody] AircraftModel model)
+        public ActionResult Put(string id, [FromBody] AircraftModel model)
         {
             var aircraft = aircraftRepository.Get(id);
             if (aircraft == null)
@@ -81,7 +92,7 @@ namespace booking.flight.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(String id)
+        public ActionResult Delete(string id)
         {
             aircraftRepository.Delete(id);
             return Ok();

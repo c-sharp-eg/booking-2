@@ -7,6 +7,7 @@ namespace booking.common.ViewModel
 {
     public class ClientModel
     {
+        public string Id { get; set; }
         public string Firstname { get; set; }
         public string Middlename { get; set; }
         public string Lastname { get; set; }

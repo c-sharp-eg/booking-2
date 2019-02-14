@@ -21,43 +21,59 @@ namespace booking.order.Controllers
         }
 
 
-        [HttpGet("[action]")]
-        public ActionResult<IEnumerable<Order>> GetAllOrders([FromQuery]int page, [FromQuery]int amount)
+        [HttpGet]
+        public ActionResult<IEnumerable<OrderModel>> GetAllOrders([FromQuery]int page, [FromQuery]int amount)
         {
             var orders = orderRepository.GetAll();
             if (page != 0 && amount != 0)
             {
                 orders = orders.Skip(page * (amount - 1)).Take(amount);
             }
+
             if (orders == null)
-            {
                 return BadRequest();
-            }
-            return Ok(orders);
+
+
+            return Ok(orders.Select(x => new OrderModel() {
+                ClientId = x.ClientId,
+                FlightId = x.FlightId,
+                Status = x.Status,
+                Summ = x.Summ
+            }).ToList());
         }
 
         // GET 
-        [HttpGet]
-        public ActionResult<Order> Get([FromQuery]String id)
+        [HttpGet("{id}")]
+        public ActionResult<OrderModel> Get(string id)
         {
             var order = orderRepository.Get(id);
             if (order == null)
-            {
                 return BadRequest();
-            }
-            return Ok(order);
+
+            return Ok(new OrderModel()
+            {
+                ClientId = order.ClientId,
+                FlightId = order.FlightId,
+                Status = order.Status,
+                Summ = order.Summ
+            });
         }
 
         //это работает?
-        [HttpGet("[action]")]
-        public ActionResult<Order> GetbyFlightId([FromQuery]String flightId)
+        [HttpGet("[action]/{id}")]
+        public ActionResult<OrderModel> GetByFlightId(string flightId)
         {
             var order = orderRepository.GetbyFlightId(flightId);
             if (order == null)
-            {
                 return BadRequest();
-            }
-            return Ok(order);
+
+            return Ok(new OrderModel()
+            {
+                ClientId = order.ClientId,
+                FlightId = order.FlightId,
+                Status = order.Status,
+                Summ = order.Summ
+            });
         }
 
 
@@ -79,7 +95,7 @@ namespace booking.order.Controllers
 
         // обновить заказ
         [HttpPut("{id}")]
-        public ActionResult Put(String id, [FromBody] OrderModel model)
+        public ActionResult Put(string id, [FromBody] OrderModel model)
         {
             var order = orderRepository.Get(id);
             if (order == null)
@@ -98,7 +114,7 @@ namespace booking.order.Controllers
 
         // DELETE 
         [HttpDelete("{id}")]
-        public ActionResult Delete(String id)
+        public ActionResult Delete(string id)
         {
             orderRepository.Delete(id);
             return Ok();
