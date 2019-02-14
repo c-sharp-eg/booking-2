@@ -7,6 +7,8 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using booking.client.Model;
 using booking.flight.Model;
+using booking.Services;
+using booking.common.ViewModel;
 
 namespace booking.Controllers
 {
@@ -15,49 +17,46 @@ namespace booking.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IHttpClientFactory clientFactory;
+        private readonly IOrderService _orderService;
+        private readonly IClientService _clientService;
+        private readonly IFlightService _flightService;
+        private readonly IAircraftService _aircraftService;
 
-        public BookingController(IHttpClientFactory clientFactory)
+        public BookingController(IHttpClientFactory clientFactory,
+            IOrderService orderService,
+            IClientService clientService,
+            IFlightService flightService,
+            IAircraftService aircraftService)
         {
             this.clientFactory = clientFactory;
+            _orderService = orderService;
+            _clientService = clientService;
+            _flightService = flightService;
+            _aircraftService = aircraftService;
         }
 
         public class Res
         {
-            public string res1 { get; set; }
-            public string res2 { get; set; }
-            public string res3 { get; set; }
-            public string res4 { get; set; }
-            
+            public IEnumerable<ClientModel> Clients { get; set; }
+            public IEnumerable<AircraftModel> Aircrafts { get; set; }
+            public IEnumerable<FlightModel> Flights { get; set; }
+            public IEnumerable<OrderModel> Orders { get; set; }
+
         }
+
         //вывести все данные
         [HttpGet("[action]")]
-        public async Task<ActionResult<int>> GetAll()
+        public async Task<ActionResult> GetAll()
         {
-            try
-            {
-                var client = clientFactory.CreateClient();
-                var response1 = await client.GetStringAsync("http://localhost:5010/api/client/getall");
-                var response2 = await client.GetStringAsync("http://localhost:5020/api/flight/GetAllFlights");
-                //var response3 = Redirect("/api/flight/getallaircrafts");
-                //var response4 = Redirect("/api / order / GetAllOrders");
-                var response3 = await client.GetStringAsync("http://localhost:5000/api/flight/getallaircrafts");
-                var response4 = await client.GetStringAsync("http://localhost:5000/api/order/GetAllOrders");
-
-                var res = new Res();
-                res.res1 = response1;
-                res.res2 = response2;
-                res.res3 = response3;
-                res.res4 = response4;
-                return Ok(res);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-
-
-
+            var res = new Res();
+            res.Clients = await _clientService.GetAll(0, 0);
+            res.Aircrafts = await _aircraftService.GetAll(0, 0);
+            res.Flights = await _flightService.GetAll(0, 0);
+            res.Orders = await _orderService.GetAll(0, 0);
+            return Ok(res);
         }
+
+
         /*1. Get заказов по полю id рейса.
         2.Если не ноль, то запоминаем id заказа. (как тут? десериализовать строку и взять поле?) не совсем понятны действия
         3.Удаляем заказ
@@ -92,11 +91,11 @@ namespace booking.Controllers
             {
                 return BadRequest(ex.Message);
             }
-           
+
         }
 
-    // GET api/values/5 
-    [HttpGet("{id}")]
+        // GET api/values/5 
+        [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
             return "value";
@@ -115,9 +114,9 @@ namespace booking.Controllers
         }
 
         // DELETE api/values/5
-      //  [HttpDelete("{id}")]
-      //  public void Delete(int id)
-      //  {
-      //  }
+        //  [HttpDelete("{id}")]
+        //  public void Delete(int id)
+        //  {
+        //  }
     }
 }
