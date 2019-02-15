@@ -33,24 +33,24 @@ namespace booking.Services
         public async Task<IEnumerable<OrderModel>> GetAll(int page, int size)
         {
             var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order?page={page}&size={size}");
-            var aircrafts = !string.IsNullOrEmpty(data)
+            var orders = !string.IsNullOrEmpty(data)
                 ? JsonConvert.DeserializeObject<IEnumerable<OrderModel>>(data)
                 : null;
-            return aircrafts;
+            return orders;
         }
 
         public async Task<OrderModel> GetByFlightId(string id)
         {
             var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order/getbyflightid?flightid={id}");
-            var aircraft = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
-            return aircraft;
+            var order = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
+            return order;
         }
 
         public async Task<OrderModel> GetById(string id)
         {
             var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order/{id}");
-            var aircraft = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
-            return aircraft;
+            var order = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
+            return order;
         }
 
         public async Task Remove(string id)

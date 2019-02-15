@@ -52,7 +52,8 @@ namespace booking.flight.Controllers
         {
             var flight = flightRepository.Get(id);
             if (flight == null)
-                return BadRequest();
+                return null;
+                //return BadRequest();
 
 
             return Ok(new FlightModel()

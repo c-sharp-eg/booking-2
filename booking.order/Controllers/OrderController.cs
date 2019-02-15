@@ -31,7 +31,8 @@ namespace booking.order.Controllers
             }
 
             if (orders == null)
-                return BadRequest();
+                return null;
+               // return BadRequest();
 
 
             return Ok(orders.Select(x => new OrderModel() {
@@ -48,7 +49,8 @@ namespace booking.order.Controllers
         {
             var order = orderRepository.Get(id);
             if (order == null)
-                return BadRequest();
+                return null;
+            //return BadRequest();
 
             return Ok(new OrderModel()
             {
@@ -59,13 +61,14 @@ namespace booking.order.Controllers
             });
         }
 
-        //это работает?
+        
         [HttpGet("[action]")]
         public ActionResult<OrderModel> GetByFlightId([FromQuery]string flightId)
         {
             var order = orderRepository.GetbyFlightId(flightId);
             if (order == null)
-                return BadRequest();
+                return null;
+              //  return BadRequest();
 
             return Ok(new OrderModel()
             {

@@ -72,7 +72,7 @@ namespace booking.Controllers
             OrderModel order;
             FlightModel flight;
             //1. Get заказов по полю id рейса.
-            while ((order = await _orderService.GetByFlightId(id)) !=null)
+            while ((order = await _orderService.GetByFlightId(id)) != null)
             {
                 var x = _orderService.Remove(order.Id);
             }
@@ -87,22 +87,31 @@ namespace booking.Controllers
 
         //
         [HttpPost("{id}")]
-        public async Task<ActionResult<int>> AddOrder(String id)
+        public async Task<ActionResult<int>> AddOrder([FromBody]OrderModel model)
         {
 
-            OrderModel order;
             FlightModel flight;
-            //1. Get заказов по полю id рейса.
-            while ((order = await _orderService.GetByFlightId(id)) != null)
+            //1. Get flight по ID , проверка что есть Freeseats
+            if ((flight = await _flightService.GetById(model.FlightId)) != null)
             {
-                var x = _orderService.Remove(order.Id);
+                if (flight.FreeSeats >0)
+                {
+                    flight.FreeSeats--;
+                    var x = _flightService.Update(model.FlightId, flight);
+                }
+                else
+                {
+                   return BadRequest(); //нет свободных мест
+                }
+            }
+            else
+            {
+                return BadRequest();//такого рейса нет
             }
 
-            while ((flight = await _flightService.GetById(id)) != null)
-            {
-                var x = _flightService.Remove(id);
-            }
-            return Ok(flight);
+             await _orderService.Create(model);
+            
+            return Ok();
 
         }
 
