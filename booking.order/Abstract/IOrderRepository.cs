@@ -8,5 +8,7 @@ namespace booking.order.Abstract
 {
     public interface IOrderRepository : IRepository<Order>
     {
+        void DeleteByFlightId(string id);
+
     }
 }

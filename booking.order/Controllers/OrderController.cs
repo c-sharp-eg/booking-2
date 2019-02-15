@@ -32,10 +32,12 @@ namespace booking.order.Controllers
 
             if (orders == null)
                 return null;
-               // return BadRequest();
+            // return BadRequest();
 
 
-            return Ok(orders.Select(x => new OrderModel() {
+            return Ok(orders.Select(x => new OrderModel()
+            {
+                Id = x.Id,
                 ClientId = x.ClientId,
                 FlightId = x.FlightId,
                 Status = x.Status,
@@ -54,6 +56,7 @@ namespace booking.order.Controllers
 
             return Ok(new OrderModel()
             {
+                Id = order.Id,
                 ClientId = order.ClientId,
                 FlightId = order.FlightId,
                 Status = order.Status,
@@ -61,18 +64,18 @@ namespace booking.order.Controllers
             });
         }
 
-        
-        [HttpGet("[action]")]
-        public ActionResult<OrderModel> GetByFlightId([FromQuery]string flightId)
+
+        [HttpGet("[action]/{id}")]
+        public ActionResult<OrderModel> GetByFlightId(string id)
         {
-            var order = orderRepository.GetbyFlightId(flightId);
+            var order = orderRepository.GetbyFlightId(id);
             if (order == null)
                 return null;
-              //  return BadRequest();
+            //  return BadRequest();
 
             return Ok(new OrderModel()
             {
-                Id=order.Id,
+                Id = order.Id,
                 ClientId = order.ClientId,
                 FlightId = order.FlightId,
                 Status = order.Status,
@@ -112,7 +115,7 @@ namespace booking.order.Controllers
             order.Summ = model.Summ;
 
             orderRepository.Update(order);
-            
+
             return Ok();
         }
 
@@ -121,6 +124,13 @@ namespace booking.order.Controllers
         public ActionResult Delete(string id)
         {
             orderRepository.Delete(id);
+            return Ok();
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public ActionResult DeleteByFlightId(string id)
+        {
+            orderRepository.DeleteByFlightId(id);
             return Ok();
         }
     }

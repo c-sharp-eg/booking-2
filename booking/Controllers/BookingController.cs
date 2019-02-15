@@ -66,78 +66,35 @@ namespace booking.Controllers
 
         //http://localhost:5000/api/booking/<id>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<int>> DeleteFlight(String id)
+        public async Task<ActionResult> DeleteFlight(string id)
         {
-
-            OrderModel order;
-            FlightModel flight;
             //1. Get заказов по полю id рейса.
-            while ((order = await _orderService.GetByFlightId(id)) != null)
-            {
-                var x = _orderService.Remove(order.Id);
-            }
-            
-            while ((flight = await _flightService.GetById(id)) !=null)
-            { 
-               var x = _flightService.Remove(id);
-            }
-            return Ok(flight);
-        
-         }
+
+            await _orderService.RemoveByFlightId(id);
+            await _flightService.Remove(id);
+
+            return Ok();
+        }
 
         //
-        [HttpPost("{id}")]
-        public async Task<ActionResult<int>> AddOrder([FromBody]OrderModel model)
-        {
-
-            FlightModel flight;
-            //1. Get flight по ID , проверка что есть Freeseats
-            if ((flight = await _flightService.GetById(model.FlightId)) != null)
-            {
-                if (flight.FreeSeats >0)
-                {
-                    flight.FreeSeats--;
-                    var x = _flightService.Update(model.FlightId, flight);
-                }
-                else
-                {
-                   return BadRequest(); //нет свободных мест
-                }
-            }
-            else
-            {
-                return BadRequest();//такого рейса нет
-            }
-
-             await _orderService.Create(model);
-            
-            return Ok();
-
-        }
-
-        // GET api/values/5 
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> AddOrder([FromBody]OrderModel model)
         {
-        }
+            var flight = await _flightService.GetById(model.FlightId);
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+            //1. Get flight по ID , проверка что есть Freeseats
+            if (flight == null || flight.FreeSeats == 0)
+                return BadRequest();//такого рейса нет
 
-        // DELETE api/values/5
-        //  [HttpDelete("{id}")]
-        //  public void Delete(int id)
-        //  {
-        //  }
+            if (flight.FreeSeats > 0)
+            {
+                flight.FreeSeats--;
+                await _flightService.Update(model.FlightId, flight);
+            }
+
+            await _orderService.Create(model);
+
+            return Ok();
+        }
     }
 }

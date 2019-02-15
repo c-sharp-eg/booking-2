@@ -20,5 +20,7 @@ namespace booking.Services
         Task<OrderModel> GetByFlightId(string id);
 
         Task Remove(string id);
+
+        Task RemoveByFlightId(string id);
     }
 }

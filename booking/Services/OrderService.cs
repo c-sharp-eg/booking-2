@@ -41,7 +41,7 @@ namespace booking.Services
 
         public async Task<OrderModel> GetByFlightId(string id)
         {
-            var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order/getbyflightid?flightid={id}");
+            var data = await _httpClient.GetStringAsync(_urls.Order + $"/api/order/getbyflightid/{id}");
             var order = !string.IsNullOrEmpty(data) ? JsonConvert.DeserializeObject<OrderModel>(data) : null;
             return order;
         }
@@ -56,6 +56,11 @@ namespace booking.Services
         public async Task Remove(string id)
         {
             await _httpClient.DeleteAsync(_urls.Order + $"/api/order/{id}");
+        }
+
+        public async Task RemoveByFlightId(string id)
+        {
+            await _httpClient.DeleteAsync(_urls.Order + $"/api/order/DeleteByFlightId/{id}");
         }
 
         public async Task Update(string id, OrderModel model)

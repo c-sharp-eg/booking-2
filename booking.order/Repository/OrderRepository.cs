@@ -33,7 +33,7 @@ namespace booking.order.Repository
             }
         }
 
-            public Order Get(string id)
+        public Order Get(string id)
         {
             return context.Orders.FirstOrDefault(x => x.Id == id);
         }
@@ -45,11 +45,7 @@ namespace booking.order.Repository
 
         public IEnumerable<Order> GetAll()
         {
-            try
-            {
-                return context.Orders.ToList();
-            }
-            catch (Exception ex) { return null; }
+            return context.Orders?.ToList();
         }
 
         public Order Update(Order item)
@@ -65,6 +61,16 @@ namespace booking.order.Repository
                 context.SaveChanges();
             }
             return order;
+        }
+
+        public void DeleteByFlightId(string id)
+        {
+            var order = context.Orders.Where(x => x.FlightId == id).ToList();
+            if (order != null)
+            {
+                context.Orders.RemoveRange(order);
+                context.SaveChanges();
+            }
         }
     }
 }
