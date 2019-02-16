@@ -77,7 +77,7 @@ namespace booking.Controllers
         }
 
         //
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<ActionResult> AddOrder([FromBody]OrderModel model)
         {
             var flight = await _flightService.GetById(model.FlightId);

@@ -23,7 +23,7 @@ namespace booking.Controllers
         {
             _flightService = flightService;
         }
-
+        //http://localhost:5000/api/flight/
         [HttpPost]
         public async Task<ActionResult> CreateFlight([FromBody]FlightModel model)
         {

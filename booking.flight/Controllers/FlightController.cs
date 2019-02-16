@@ -38,6 +38,7 @@ namespace booking.flight.Controllers
 
             return Ok(flights.Select( x=> new FlightModel()
             {
+                Id = x.Id,
                 AircraftId = x.AircraftId,
                 Date = x.Date,
                 FreeSeats = x.FreeSeats,
