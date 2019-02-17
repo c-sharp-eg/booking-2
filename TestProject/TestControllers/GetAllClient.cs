@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using booking.common.ViewModel;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -8,51 +7,52 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using booking.client.Controllers;
+using booking.client.Model;
 using booking.client.Abstract;
 using booking.client.Repository;
 using Xunit;
 
-
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestProject.TestControllers
 {
-    public class TestClientController
+    [TestClass]
+    public class GetAllClient
     {
 
-        [Fact]
+        [TestMethod]
         public void TestGetAllClients()
         {
             // Arrange
-            int page = 1, size = 2;
-            var testClients = GetTestClients().Skip((page - 1) * size).Take(size);
+            //int page = 1, size = 2;
+            var testClients = GetTestClients();//.Skip((page - 1) * size).Take(size);
             var mockLogger = new Mock<ILogger<ClientController>>();
-            var mockRepo = new Mock<ClientRepository>();
+            var mockRepo = new Mock<IClientRepository>();
             //var mockService = new Mock<IClientService>();
 
-            //вот это зачем?
-            //mockRepo.Setup(c => c.GetAll(page, size))
-            //   .Returns(testClients);
+            mockRepo.Setup(c => c.GetAll())
+               .Returns(testClients);
             var controller = new ClientController(mockRepo.Object);
 
             // Act
-            var result = controller.GetAll(page, size);
+            var result =  controller.GetAll(0,0);
             
+
             // Assert
             // var requestResult = Assert.IsType<IEnumerable<Concert>>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<ClientModel>>(
+            var model = Xunit.Assert.IsAssignableFrom<IEnumerable<Client>>(
                 result);
-            Assert.Equal(2, model.Count());
+            Xunit.Assert.Equal(2, model.Count());
         }
 
-        private List<ClientModel> GetTestClients()
+        private List<Client> GetTestClients()
         {
-            var clients = new List<ClientModel>();
-            clients.Add(new ClientModel()
+            var clients = new List<Client>();
+            clients.Add(new Client()
             {
                 Id = "100",
                 Firstname="Анна",
@@ -60,7 +60,7 @@ namespace TestProject.TestControllers
                 Lastname = "Козакова",
                 Age =43
             });
-            clients.Add(new ClientModel()
+            clients.Add(new Client()
             {
                 Id = "101",
                 Firstname = "Макар",
@@ -68,7 +68,7 @@ namespace TestProject.TestControllers
                 Lastname = "Румянцев",
                 Age =24
             });
-            clients.Add(new ClientModel()
+            clients.Add(new Client()
             {
                 Id = "102",
                 Firstname = "Наталия",
