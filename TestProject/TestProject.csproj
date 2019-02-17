@@ -19,8 +19,4 @@
     <ProjectReference Include="..\booking\booking.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TestControllers\" />
-  </ItemGroup>
-
 </Project>
