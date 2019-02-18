@@ -1,7 +1,9 @@
-﻿using booking.client.Abstract;
-using booking.client.Controllers;
-using booking.client.Model;
-using booking.client.Repository;
+﻿using booking.order.Abstract;
+using booking.order.Controllers;
+using booking.order.Model;
+using booking.order.Repository;
+using booking.common.ViewModel;
+using booking.order.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,39 +15,33 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace TestProject.TestClients
+namespace TestProject.TestOrders
 {
     public class CreateOrder
     {
         
         [Fact]
-        public async Task TestCreateClient()
+        public async Task TestCreateOrder()
         {
             // Arrange
             string testId = "100";
-            Client client = GetTestClients().FirstOrDefault(p => p.Id == testId);
+            Order order = GetTestOrders().FirstOrDefault(p => p.Id == testId);
             //var mockLogger = new Mock<ILogger<ClientController>>();
             
-            var mockRepo = new Mock<IClientRepository>();
-            mockRepo.Setup(c => c.Add(client));
+            var mockRepo = new Mock<IOrderRepository>();
+            mockRepo.Setup(c => c.Add(order));
             //mockRepo.Setup(c => c.SaveChanges())
             //    .Returns(Task.CompletedTask);
-            var controller = new ClientController(mockRepo.Object);
+            var controller = new OrderController(mockRepo.Object);
 
             // Act
-            var result =  controller.Post(client);
+            var result =  controller.Post(order);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
            
             var model = Assert.IsType<OkResult>(actionResult);
-            /*
-            Assert.Equal(client.Id, model.Id);
-            Assert.Equal(client.Firstname, model.Firstname);
-            Assert.Equal(client.Middlename, model.Middlename);
-            Assert.Equal(client.Lastname, model.Lastname);
-            Assert.Equal(client.Age, model.Age);
-            */
+            
         }
         /*
         [Fact]
@@ -77,39 +73,41 @@ namespace TestProject.TestClients
             Assert.Equal(client.Age, model.Age);
             */
 
-        
 
 
-        private List<Client> GetTestClients()
+
+        private List<Order> GetTestOrders()
         {
-            var clients = new List<Client>();
-            clients.Add(new Client()
+            var orders = new List<Order>
             {
-                Id = "100",
-                Firstname = "Анна",
-                Middlename = "Михайловна",
-                Lastname = "Козакова",
-                Age = 43
-            });
-            clients.Add(new Client()
-            {
-                Id = "101",
-                Firstname = "Макар",
-                Middlename = "Брониславович",
-                Lastname = "Румянцев",
-                Age = 24
-            });
-            clients.Add(new Client()
-            {
-                Id = "102",
-                Firstname = "Наталия",
-                Middlename = "Мироновна",
-                Lastname = "Васильева",
-                Age = 30
-            });
 
-            return clients;
+                new Order()
+                {
+                    Id = "1",
+                    FlightId = "110",
+                    ClientId = "210",
+                    Summ = 1000,
+                    Status = 0
+                },
+                new Order()
+                {
+                    Id = "2",
+                    FlightId = "120",
+                    ClientId = "220",
+                    Summ = 2000,
+                    Status = 0
+                },
+                new Order()
+                {
+                    Id = "3",
+                    FlightId = "130",
+                    ClientId = "230",
+                    Summ = 3000,
+                    Status = 0
+                }
+            };
+            return orders;
         }
-         
+
     }
 }
