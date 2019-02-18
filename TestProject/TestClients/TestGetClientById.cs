@@ -18,9 +18,10 @@ namespace TestProject.TestControllers
         public void TestGetClient()
         {
             String testid = "100";
-            var testClients = GetTestClients();
-            ClientModel client = GetTestClients().FirstOrDefault(p => p.Id == testid);
-            //var mockLogger = new Mock<ILogger<ClientController>>();
+            
+            Client client = GetTestClients().FirstOrDefault(p => p.Id == testid);
+            ClientModel clientmodel = GetTestClientsModels().FirstOrDefault(p => p.Id == testid);
+            
             var mockRepo = new Mock<IClientRepository>();
 
             mockRepo.Setup(c => c.Get(testid))
@@ -33,18 +34,18 @@ namespace TestProject.TestControllers
             // Assert
             var actionResult = Assert.IsType<ActionResult<ClientModel>>(result);
             var model = Assert.IsType<OkObjectResult>(actionResult.Result);
-            //Assert.Equal(3, (model.Value as IEnumerable<Client>).Count());
+            
             Assert.Single((model as IEnumerable<ClientModel>));
             
         }
 
 
 
-        private IEnumerable<ClientModel> GetTestClients()
+        private IEnumerable<Client> GetTestClients()
         {
-            var clients = new List<ClientModel>
+            var clients = new List<Client>
             {
-                new ClientModel()
+                new Client()
                 {
                     Id = "100",
                     Firstname = "Анна",
@@ -52,7 +53,7 @@ namespace TestProject.TestControllers
                     Lastname = "Козакова",
                     Age = 43
                 },
-                new ClientModel()
+                new Client()
                 {
                     Id = "101",
                     Firstname = "Макар",
@@ -60,7 +61,7 @@ namespace TestProject.TestControllers
                     Lastname = "Румянцев",
                     Age = 24
                 },
-                new ClientModel()
+                new Client()
                 {
                     Id = "102",
                     Firstname = "Наталия",
@@ -69,6 +70,37 @@ namespace TestProject.TestControllers
                     Age = 30
                 }
             };
+
+            return clients;
+        }
+
+        private List<ClientModel> GetTestClientsModels()
+        {
+            var clients = new List<ClientModel>();
+            clients.Add(new ClientModel()
+            {
+                Id = "100",
+                Firstname = "Анна",
+                Middlename = "Михайловна",
+                Lastname = "Козакова",
+                Age = 43
+            });
+            clients.Add(new ClientModel()
+            {
+                Id = "101",
+                Firstname = "Макар",
+                Middlename = "Брониславович",
+                Lastname = "Румянцев",
+                Age = 24
+            });
+            clients.Add(new ClientModel()
+            {
+                Id = "102",
+                Firstname = "Наталия",
+                Middlename = "Мироновна",
+                Lastname = "Васильева",
+                Age = 30
+            });
 
             return clients;
         }

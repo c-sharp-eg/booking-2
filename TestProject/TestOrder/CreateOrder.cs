@@ -26,16 +26,15 @@ namespace TestProject.TestOrders
             // Arrange
             string testId = "100";
             Order order = GetTestOrders().FirstOrDefault(p => p.Id == testId);
-            //var mockLogger = new Mock<ILogger<ClientController>>();
-            
+            OrderModel ordermodel = GetTestOrdersModels().FirstOrDefault(p => p.Id == testId);
+
             var mockRepo = new Mock<IOrderRepository>();
             mockRepo.Setup(c => c.Add(order));
-            //mockRepo.Setup(c => c.SaveChanges())
-            //    .Returns(Task.CompletedTask);
+            
             var controller = new OrderController(mockRepo.Object);
 
             // Act
-            var result =  controller.Post(order);
+            var result =  controller.Post(ordermodel);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -98,6 +97,39 @@ namespace TestProject.TestOrders
                     Status = 0
                 },
                 new Order()
+                {
+                    Id = "3",
+                    FlightId = "130",
+                    ClientId = "230",
+                    Summ = 3000,
+                    Status = 0
+                }
+            };
+            return orders;
+        }
+
+        private List<OrderModel> GetTestOrdersModels()
+        {
+            var orders = new List<OrderModel>
+            {
+
+                new OrderModel()
+                {
+                    Id = "1",
+                    FlightId = "110",
+                    ClientId = "210",
+                    Summ = 1000,
+                    Status = 0
+                },
+                new OrderModel()
+                {
+                    Id = "2",
+                    FlightId = "120",
+                    ClientId = "220",
+                    Summ = 2000,
+                    Status = 0
+                },
+                new OrderModel()
                 {
                     Id = "3",
                     FlightId = "130",

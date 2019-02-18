@@ -26,7 +26,10 @@ namespace TestProject.TestFlights
             string testId = "100";
             Flight flight = GetTestFlights().FirstOrDefault(p => p.Id == testId);
             Aircraft aircraft = GetTestAircrafts().FirstOrDefault(p => p.Id == testId);
-            //var mockLogger = new Mock<ILogger<ClientController>>();
+
+            FlightModel flightmodel = GetTestFlightsModels().FirstOrDefault(p => p.Id == testId);
+            AircraftModel aircraftmodel = GetTestAircraftsModels().FirstOrDefault(p => p.Id == testId);
+           
             var testAircraft = GetTestAircrafts();
             var mockRepoAircraft = new Mock<IAircraftRepository>();
             var mockRepoFlight = new Mock<IFlightRepository>();
@@ -35,7 +38,7 @@ namespace TestProject.TestFlights
             var controller = new FlightController(mockRepoFlight.Object, mockRepoAircraft.Object);
 
             // Act
-            var result =  controller.Post(flight);
+            var result =  controller.Post(flightmodel);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -49,10 +52,12 @@ namespace TestProject.TestFlights
         {
             // Arrange
             string testId = "100";
-            FlightModel flight = GetTestFlights().FirstOrDefault(p => p.Id == testId);
-            AircraftModel aircraft = GetTestAircrafts().FirstOrDefault(p => p.Id == testId);
-            //var mockLogger = new Mock<ILogger<ClientController>>();
-            var testAircraft = GetTestAircrafts();
+            Flight flight = GetTestFlights().FirstOrDefault(p => p.Id == testId);
+            Aircraft aircraft = GetTestAircrafts().FirstOrDefault(p => p.Id == testId);
+
+            FlightModel flightmodel = GetTestFlightsModels().FirstOrDefault(p => p.Id == testId);
+            AircraftModel aircraftmodel = GetTestAircraftsModels().FirstOrDefault(p => p.Id == testId);
+
             var mockRepoAircraft = new Mock<IAircraftRepository>();
             var mockRepoFlight = new Mock<IFlightRepository>();
             mockRepoFlight.Setup(c => c.Add(flight));
@@ -60,7 +65,7 @@ namespace TestProject.TestFlights
             var controller = new AircraftController(mockRepoAircraft.Object);
 
             // Act
-            var result = controller.Post(aircraft);
+            var result = controller.Post(aircraftmodel);
 
             // Assert
             var actionResult = Assert.IsType<OkResult>(result);
@@ -102,7 +107,66 @@ namespace TestProject.TestFlights
 
 
 
-        private List<FlightModel> GetTestFlights()
+        private List<Flight> GetTestFlights()
+        {
+            var flights = new List<Flight>
+            {
+                new Flight()
+                {
+                    Id = "100",
+                    Number = "SU102",
+                    AircraftId = "1000",
+                    FreeSeats = 1,
+                    Sum = 1000
+                },
+                new Flight()
+                {
+                    Id = "101",
+                    Number = "AR111",
+                    AircraftId = "1100",
+                    FreeSeats = 10,
+                    Sum = 2000
+                },
+                new Flight()
+                {
+                    Id = "102",
+                    Number = "SU115",
+                    AircraftId = "1200",
+                    FreeSeats = 55,
+                    Sum = 3000
+                }
+            };
+            return flights;
+        }
+
+
+        private List<Aircraft> GetTestAircrafts()
+        {
+            var aircrafts = new List<Aircraft>
+            {
+                new Aircraft()
+                {
+                    Id = "1100",
+                    Name = "SU102",
+                    NumberOfSeats = 1,
+                },
+                new Aircraft()
+                {
+                    Id = "1200",
+                    Name = "SU102",
+                    NumberOfSeats = 15,
+                },
+                new Aircraft()
+                {
+                    Id = "1300",
+                    Name = "SU102",
+                    NumberOfSeats = 60,
+                }
+            };
+            return aircrafts;
+        }
+
+        private List<FlightModel> GetTestFlightsModels()
         {
             var flights = new List<FlightModel>
             {
@@ -135,7 +199,7 @@ namespace TestProject.TestFlights
         }
 
 
-        private List<AircraftModel> GetTestAircrafts()
+        private List<AircraftModel> GetTestAircraftsModels()
         {
             var aircrafts = new List<AircraftModel>
             {
@@ -160,6 +224,5 @@ namespace TestProject.TestFlights
             };
             return aircrafts;
         }
-
     }
 }
