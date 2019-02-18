@@ -4,10 +4,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Moq;
-using booking.common.ViewModel;
+
 using booking.client.Controllers;
 using booking.client.Model;
 using booking.client.Abstract;
+using booking.common.ViewModel;
 
 namespace TestProject.TestControllers
 {
@@ -17,7 +18,7 @@ namespace TestProject.TestControllers
         public void TestGetAllClients()
         {
             var testClients = GetTestClients();
-            var mockLogger = new Mock<ILogger<ClientController>>();
+            //var mockLogger = new Mock<ILogger<ClientController>>();
             var mockRepo = new Mock<IClientRepository>();
 
             mockRepo.Setup(c => c.GetAll())
@@ -33,7 +34,29 @@ namespace TestProject.TestControllers
             Assert.Equal(3, (model.Value as IEnumerable<ClientModel>).Count());
         }
 
-        private IEnumerable<Client> GetTestClients()
+        [Fact]
+        public void TestGetAllClientsPagination()
+        {
+            int page = 2;
+            int amount = 1;
+            var testClients = GetTestClients().Skip(page * (amount - 1)).Take(amount);
+            //var mockLogger = new Mock<ILogger<ClientController>>();
+            var mockRepo = new Mock<IClientRepository>();
+
+            mockRepo.Setup(c => c.GetAll())
+               .Returns(testClients);
+            var controller = new ClientController(mockRepo.Object);
+
+            // Act
+            var result = controller.GetAll(0, 0);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<IEnumerable<ClientModel>>>(result);
+            var model = Assert.IsType<OkObjectResult>(actionResult.Result);
+            Assert.Single((model.Value as IEnumerable<ClientModel>));
+        }
+
+        private List<Client> GetTestClients()
         {
             var clients = new List<Client>
             {
@@ -62,10 +85,9 @@ namespace TestProject.TestControllers
                     Age = 30
                 }
             };
-
             return clients;
         }
+
     }
-
-
 }
+
