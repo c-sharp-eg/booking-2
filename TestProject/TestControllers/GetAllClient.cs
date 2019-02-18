@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Xunit;
 using Moq;
-using System.Linq;
+using booking.common.ViewModel;
 using booking.client.Controllers;
 using booking.client.Model;
-using booking.client.Repository;
 using booking.client.Abstract;
-using Xunit;
-using Microsoft.AspNetCore.Mvc;
-using booking.common.ViewModel;
 
 namespace TestProject.TestControllers
 {
