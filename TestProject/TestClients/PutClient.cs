@@ -32,7 +32,7 @@ namespace TestProject.TestControllers
         }
 
         [Fact]
-        public async Task TestPutClientReturnsNotFoundResultId()
+        public async Task TestPutClientNotFoundResultId()
         {
             // Arrange
             String testId = "101";
@@ -47,7 +47,24 @@ namespace TestProject.TestControllers
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
-       
+
+        [Fact]
+        public async Task TestPutClientOkResult()
+        {
+            // Arrange
+            String testId = "100";
+            ClientModel client = GetTestClients()[0];
+            var mockRepo = new Mock<IClientRepository>();
+
+            var controller = new ClientController(mockRepo.Object);
+
+            // Act
+            var result = controller.Put(testId, client);
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
 
 
         private List<ClientModel> GetTestClients()

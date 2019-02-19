@@ -82,7 +82,7 @@ namespace TestProject.TestControllers
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<AircraftModel>>>(result);
             var model = Assert.IsType<OkObjectResult>(actionResult.Result);
-            Assert.Single((model.Value as IEnumerable<FlightModel>));
+            Assert.Single((model.Value as IEnumerable<AircraftModel>));
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace TestProject.TestControllers
             var actionResult = Assert.IsType<ActionResult<IEnumerable<FlightModel>>>(result);
             var model = Assert.IsType<OkObjectResult>(actionResult.Result);
             
-            Assert.Single((model.Value as IEnumerable<AircraftModel>));
+            Assert.Single((model.Value as IEnumerable<FlightModel>));
         }
 
         private List<Flight> GetTestFlights()

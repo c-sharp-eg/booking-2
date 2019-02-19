@@ -24,7 +24,7 @@ namespace TestProject.TestOrders
         public async Task TestCreateOrder()
         {
             // Arrange
-            string testId = "100";
+            string testId = "1";
             Order order = GetTestOrders().FirstOrDefault(p => p.Id == testId);
             OrderModel ordermodel = GetTestOrdersModels().FirstOrDefault(p => p.Id == testId);
 
@@ -42,37 +42,7 @@ namespace TestProject.TestOrders
             var model = Assert.IsType<OkResult>(actionResult);
             
         }
-        /*
-        [Fact]
-        public async Task TestCreateClient()
-        {
-            // Arrange
-            string testId = "100";
-            Client client = GetTestClients().FirstOrDefault(p => p.Id == testId);
-            //var mockLogger = new Mock<ILogger<ClientController>>();
-
-            var mockRepo = new Mock<IClientRepository>();
-            mockRepo.Setup(c => c.Add(client));
-            //mockRepo.Setup(c => c.SaveChanges())
-            //    .Returns(Task.CompletedTask);
-            var controller = new ClientController(mockRepo.Object);
-
-            // Act
-            var result = controller.Post(client);
-
-            // Assert
-            var actionResult = Assert.IsType<OkResult>(result);
-
-            var model = Assert.IsType<OkResult>(actionResult);
-            /*
-            Assert.Equal(client.Id, model.Id);
-            Assert.Equal(client.Firstname, model.Firstname);
-            Assert.Equal(client.Middlename, model.Middlename);
-            Assert.Equal(client.Lastname, model.Lastname);
-            Assert.Equal(client.Age, model.Age);
-            */
-
-
+        
 
 
         private List<Order> GetTestOrders()
