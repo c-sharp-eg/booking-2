@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace TestProject.TestControllers
+namespace TestProject.TestOrder
 {
-    public class PutOrder
+    public class PutOrders
     {
         [Fact]
         public async Task TestPutOrderNotFoundResult()
@@ -53,7 +53,7 @@ namespace TestProject.TestControllers
         public async Task TestPutOrderOkResult()
         {
             // Arrange
-            String testId = "100";
+            String testId = "1";
             OrderModel order = GetTestOrders()[0];
             var mockRepo = new Mock<IOrderRepository>();
 

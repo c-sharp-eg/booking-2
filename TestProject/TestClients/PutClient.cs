@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace TestProject.TestControllers
+namespace TestProject.TestLients
 {
-    public class PutFlight
+    public class PutClient
     {
         [Fact]
         public async Task TestPutClientNotFoundResult()
@@ -36,13 +36,14 @@ namespace TestProject.TestControllers
         {
             // Arrange
             String testId = "101";
-            ClientModel client = GetTestClients()[0];
+            ClientModel clientmodel = GetTestClientsModels()[0];
+            Client client = GetTestClients()[0];
             var mockRepo = new Mock<IClientRepository>();
            
             var controller = new ClientController(mockRepo.Object);
 
             // Act
-            var result =  controller.Put(testId, client);
+            var result =  controller.Put(testId, clientmodel);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
@@ -53,13 +54,16 @@ namespace TestProject.TestControllers
         {
             // Arrange
             String testId = "100";
-            ClientModel client = GetTestClients()[0];
+            ClientModel clientmodel = GetTestClientsModels()[0];
+            Client client = GetTestClients()[0];
             var mockRepo = new Mock<IClientRepository>();
-
+            mockRepo = new Mock<IClientRepository>();
+            mockRepo.Setup(c => c.Update(client))
+                .Returns(GetTestClients()[0]);
             var controller = new ClientController(mockRepo.Object);
 
             // Act
-            var result = controller.Put(testId, client);
+            var result = controller.Put(testId, clientmodel);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -67,7 +71,7 @@ namespace TestProject.TestControllers
 
 
 
-        private List<ClientModel> GetTestClients()
+        private List<ClientModel> GetTestClientsModels()
         {
             var clients = new List<ClientModel>
             {
@@ -99,5 +103,36 @@ namespace TestProject.TestControllers
             return clients;
         }
 
+        private List<Client> GetTestClients()
+        {
+            var clients = new List<Client>
+            {
+                new Client()
+                {
+                    Id = "100",
+                    Firstname = "Анна",
+                    Middlename = "Михайловна",
+                    Lastname = "Козакова",
+                    Age = 43
+                },
+                new Client()
+                {
+                    Id = "101",
+                    Firstname = "Макар",
+                    Middlename = "Брониславович",
+                    Lastname = "Румянцев",
+                    Age = 24
+                },
+                new Client()
+                {
+                    Id = "102",
+                    Firstname = "Наталия",
+                    Middlename = "Мироновна",
+                    Lastname = "Васильева",
+                    Age = 30
+                }
+            };
+            return clients;
+        }
     }
 }
