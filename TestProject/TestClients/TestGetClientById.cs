@@ -35,7 +35,7 @@ namespace TestProject.TestControllers
             var actionResult = Assert.IsType<ActionResult<ClientModel>>(result);
             var model = Assert.IsType<OkObjectResult>(actionResult.Result);
             
-            Assert.Single((model as IEnumerable<ClientModel>));
+            Assert.NotNull((model.Value as ClientModel));
             
         }
 

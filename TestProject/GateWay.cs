@@ -28,7 +28,7 @@ namespace TestProject
                 var mockServiceAircraft = new Mock<IAircraftService>();
 
             mockServiceClient.Setup(c => c.GetAll(1, 1));
-            //   .Returns(booking.Controllers.ClientController.GetAll());
+            //.Returns(Task.FromResult(GetTestClients()[0]));
             mockServiceOrder.Setup(c => c.GetAll(1, 1));
             mockServiceFlight.Setup(c => c.GetAll(1, 1));
             mockServiceAircraft.Setup(c => c.GetAll(1, 1));
@@ -46,7 +46,6 @@ namespace TestProject
                 Assert.Single(model);
         }
 
-
         [Fact]
         public async Task AddOrderGatewayActionResult()
         {
@@ -59,25 +58,26 @@ namespace TestProject
             var mockServiceAircraft = new Mock<IAircraftService>();
             OrderModel order = GetTestOrders()[0];
             mockServiceOrder.Setup(c => c.Create(GetTestOrders()[0]));
-            //.ReturnsAsync((true, GetTestConcerts()[0]));
+            //.ReturnsAsync((true, GetTestConcerts()[0])); 
             mockServiceFlight.Setup(c => c.Update(testId, GetTestFlights()[0]));
-            mockServiceFlight.Setup(c => c.GetById(testId));
-            //mockServiceAircraft.Setup(c => c.GetAll(1, 1));
+            mockServiceFlight.Setup((c) => c.GetById(testId))
+            .Returns(Task.FromResult(GetTestFlights()[0]));
+            //mockServiceAircraft.Setup(c => c.GetAll(1, 1)); 
 
 
             var controller = new BookingController(mockClientFactory.Object,
-                   mockServiceOrder.Object, mockServiceClient.Object, mockServiceFlight.Object, mockServiceAircraft.Object);
+            mockServiceOrder.Object, mockServiceClient.Object, mockServiceFlight.Object, mockServiceAircraft.Object);
 
-            // Act
+            // Act 
             var result = await controller.AddOrder(order);
 
-            // Assert
-            var requestResult = Assert.IsType<CreatedAtActionResult>(result);
+            // Assert 
+            var requestResult = Assert.IsType<OkResult>(result);
 
         }
 
 
-        
+
 
         [Fact]
         public async Task DeleteFlightGatewayBadrequestResult()
@@ -202,7 +202,7 @@ namespace TestProject
                 new OrderModel()
                 {
                     Id = "1",
-                    FlightId = "110",
+                    FlightId = "100",
                     ClientId = "210",
                     Summ = 1000,
                     Status = 0

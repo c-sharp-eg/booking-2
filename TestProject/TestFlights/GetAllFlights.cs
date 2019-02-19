@@ -48,7 +48,8 @@ namespace TestProject.TestControllers
             var mockRepoFlight = new Mock<IFlightRepository>();
             mockRepoFlight.Setup(c => c.GetAll())
                .Returns(testFlight);
-            mockRepoAircraft.Setup(c => c.GetAll());
+            mockRepoAircraft.Setup(c => c.GetAll())
+                .Returns(testAircraft);
             var controller = new AircraftController(mockRepoAircraft.Object);
 
             // Act
@@ -73,7 +74,8 @@ namespace TestProject.TestControllers
             var mockRepoFlight = new Mock<IFlightRepository>();
             mockRepoFlight.Setup(c => c.GetAll())
                .Returns(testFlight);
-            mockRepoAircraft.Setup(c => c.GetAll());
+            mockRepoAircraft.Setup(c => c.GetAll())
+                .Returns(testAircraft); ;
             var controller = new AircraftController(mockRepoAircraft.Object);
 
             // Act
