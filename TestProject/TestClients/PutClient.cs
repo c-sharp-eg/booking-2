@@ -52,21 +52,24 @@ namespace TestProject.TestLients
         [Fact]
         public async Task TestPutClientOkResult()
         {
-            // Arrange
+            // Arrange 
             String testId = "100";
             ClientModel clientmodel = GetTestClientsModels()[0];
             Client client = GetTestClients()[0];
             var mockRepo = new Mock<IClientRepository>();
             mockRepo = new Mock<IClientRepository>();
             mockRepo.Setup(c => c.Update(client))
-                .Returns(GetTestClients()[0]);
+            .Returns(GetTestClients()[0]);
+            mockRepo.Setup(c => c.Get(testId))
+            .Returns(new Client() { Id = testId });
+
             var controller = new ClientController(mockRepo.Object);
 
-            // Act
+            // Act 
             var result = controller.Put(testId, clientmodel);
 
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
+            // Assert 
+            Assert.IsType<OkResult>(result);
         }
 
 

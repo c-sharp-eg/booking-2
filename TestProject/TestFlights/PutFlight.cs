@@ -58,21 +58,23 @@ namespace TestProject.TestFlights
         [Fact]
         public async Task TestPutFlightOkResult()
         {
-            // Arrange
+            // Arrange 
             String testId = "100";
             Flight flight = GetTestFlights()[0];
             FlightModel flightmodel = GetTestFlightsModels()[0];
             var mockRepoFlight = new Mock<IFlightRepository>();
             var mockRepoAircraft = new Mock<IAircraftRepository>();
             mockRepoFlight.Setup(c => c.Update(flight));
+            mockRepoFlight.Setup(c => c.Get(testId))
+            .Returns(new Flight() { Id = testId });
 
             var controller = new FlightController(mockRepoFlight.Object, mockRepoAircraft.Object);
 
-            // Act
+            // Act 
             var result = controller.Put(testId, flightmodel);
 
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
+            // Assert 
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]
@@ -82,6 +84,7 @@ namespace TestProject.TestFlights
             
             var mockRepoAircraft = new Mock<IAircraftRepository>();
             var controller = new AircraftController(mockRepoAircraft.Object);
+            
             controller.ModelState.AddModelError("error", "some error");
 
             // Act
@@ -113,19 +116,21 @@ namespace TestProject.TestFlights
         [Fact]
         public async Task TestPutAircraftOkResult()
         {
-            // Arrange
+            // Arrange 
             String testId = "1100";
             Aircraft aircraft = GetTestAircrafts()[0];
             AircraftModel aircraftmodel = GetTestAircraftsModels()[0];
             var mockRepoAircraft = new Mock<IAircraftRepository>();
-            mockRepoAircraft.Setup(c => c.Update(aircraft));  
+            mockRepoAircraft.Setup(c => c.Update(aircraft));
+            mockRepoAircraft.Setup(c => c.Get(testId))
+            .Returns(new Aircraft() { Id = testId });
             var controller = new AircraftController(mockRepoAircraft.Object);
 
-            // Act
+            // Act 
             var result = controller.Put(testId, aircraftmodel);
 
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
+            // Assert 
+            Assert.IsType<OkResult>(result);
         }
 
         private List<FlightModel> GetTestFlightsModels()

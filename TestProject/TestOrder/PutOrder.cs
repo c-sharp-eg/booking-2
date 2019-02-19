@@ -52,18 +52,17 @@ namespace TestProject.TestOrder
         [Fact]
         public async Task TestPutOrderOkResult()
         {
-            // Arrange
+            // Arrange 
             String testId = "1";
             OrderModel order = GetTestOrders()[0];
             var mockRepo = new Mock<IOrderRepository>();
-
             var controller = new OrderController(mockRepo.Object);
 
-            // Act
+            // Act 
             var result = controller.Put(testId, order);
 
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
+            // Assert 
+            Assert.IsType<NotFoundResult>(result);
         }
 
         private List<OrderModel> GetTestOrders()

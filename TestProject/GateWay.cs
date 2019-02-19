@@ -17,33 +17,33 @@ namespace TestProject
     {
         [Fact]
         public async Task TestGetAll()
-            {
-                int testId = 1;
-        
-            //var mockLogger = new Mock<ILogger<ConcertsController>>();
-                var mockClientFactory = new Mock<IHttpClientFactory>();
-                var mockServiceClient = new Mock<IClientService>();
-                var mockServiceOrder = new Mock<IOrderService>();
-                var mockServiceFlight = new Mock<IFlightService>();
-                var mockServiceAircraft = new Mock<IAircraftService>();
+        {
+            int testId = 1;
+
+            //var mockLogger = new Mock<ILogger<ConcertsController»(); 
+            var mockClientFactory = new Mock<IHttpClientFactory>();
+            var mockServiceClient = new Mock<IClientService>();
+            var mockServiceOrder = new Mock<IOrderService>();
+            var mockServiceFlight = new Mock<IFlightService>();
+            var mockServiceAircraft = new Mock<IAircraftService>();
 
             mockServiceClient.Setup(c => c.GetAll(1, 1));
-            //.Returns(Task.FromResult(GetTestClients()[0]));
+            //.Returns(Task.FromResult(GetTestClients()[0])); 
             mockServiceOrder.Setup(c => c.GetAll(1, 1));
             mockServiceFlight.Setup(c => c.GetAll(1, 1));
             mockServiceAircraft.Setup(c => c.GetAll(1, 1));
 
 
-            var controller = new BookingController(mockClientFactory.Object, 
-                    mockServiceOrder.Object, mockServiceClient.Object, mockServiceFlight.Object, mockServiceAircraft.Object);
+            var controller = new BookingController(mockClientFactory.Object,
+            mockServiceOrder.Object, mockServiceClient.Object, mockServiceFlight.Object, mockServiceAircraft.Object);
 
-                // Act
-                var result = await controller.GetAll();
+            // Act 
+            var result = await controller.GetAll();
 
-                // Assert
-                var requestResult = Assert.IsType<OkObjectResult>(result);
-                var model = Assert.IsType<List<Res>>(requestResult.Value);
-                Assert.Single(model);
+            // Assert 
+            var requestResult = Assert.IsType<OkObjectResult>(result);
+            var model = Assert.IsType<Res>(requestResult.Value);
+            Assert.NotNull(model);
         }
 
         [Fact]
@@ -82,26 +82,26 @@ namespace TestProject
         [Fact]
         public async Task DeleteFlightGatewayBadrequestResult()
         {
-            String testId = "100";
-            bool success = true;
+            string testId = "100";
             var mockClientFactory = new Mock<IHttpClientFactory>();
             var mockServiceClient = new Mock<IClientService>();
             var mockServiceOrder = new Mock<IOrderService>();
             var mockServiceFlight = new Mock<IFlightService>();
             var mockServiceAircraft = new Mock<IAircraftService>();
             OrderModel order = GetTestOrders()[0];
-            mockServiceOrder.Setup(c => c.RemoveByFlightId(testId));
-            mockServiceFlight.Setup(c => c.Remove(testId));
+            mockServiceOrder.Setup(c => c.RemoveByFlightId(testId))
+            .Returns(Task.FromResult(0));
+            mockServiceFlight.Setup(c => c.Remove(testId))
+            .Returns(Task.FromResult(0));
 
             var controller = new BookingController(mockClientFactory.Object,
-                   mockServiceOrder.Object, mockServiceClient.Object, mockServiceFlight.Object, mockServiceAircraft.Object);
+            mockServiceOrder.Object, mockServiceClient.Object, mockServiceFlight.Object, mockServiceAircraft.Object);
 
-            // Act
+            // Act 
             var result = await controller.DeleteFlight(testId);
 
-            // Assert
-            var requestResult = Assert.IsType<CreatedAtActionResult>(result);
-
+            // Assert 
+            var requestResult = Assert.IsType<OkResult>(result);
         }
 
         private List<ClientModel> GetTestClients()
